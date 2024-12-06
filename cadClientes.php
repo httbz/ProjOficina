@@ -4,7 +4,7 @@ include_once './classes/Usuario.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $usuario = new Usuario($db);
+    $cliente = new Usuario($db);
 
     $nome = $_POST['nome'];
     $tipo = $_POST['tipo'];
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $senha = $_POST['senha'];
     $endComplemento = $_POST['endComplemento'];
 
-    $usuario->registrar($nome, $tipo, $senha, $sexo, $dataNasc, $email, $endCidade, $endBairro, $endNum, $endComplemento, $celular, $cpf);
+    $cliente->registrar($nome, $tipo, $senha, $sexo, $dataNasc, $email, $endCidade, $endBairro, $endNum, $endComplemento, $celular, $cpf);
     header('Location: index.php');
     exit();
 }
