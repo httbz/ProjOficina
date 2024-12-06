@@ -50,7 +50,7 @@ $usuarios = $usuario->pesquisarUsuarios($termo);
             <h1 class="title-container">Usuários</h1>
             <form method="GET">
                 <div class="row">
-                    <input type="text" name="search" placeholder="Pesquisar por nome ou e-mail" class="control">
+                    <input type="text" name="search" id="search" placeholder="Pesquisar por Usuário" class="control">
                     <button type="submit" class="btn-pesquisa"><ion-icon name="search" style="font-weight: 900;"></ion-icon></button>
                 </div>
             </form>

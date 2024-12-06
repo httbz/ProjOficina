@@ -18,7 +18,7 @@ header {
 }
 h1 {
   font-size: 16px;
-  font-weight: 100;
+  font-weight: 3rem;
 }
 main {
   display: flex;
@@ -28,13 +28,6 @@ main {
   background: #212121;
   height: auto;
   width: 100vw;
-}
-.row {
-  width: 100vw;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
 }
 .small-img {
   height: 65px;
@@ -52,30 +45,53 @@ main {
   justify-content: center;
   align-items: center;
 }
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #212121;
+  height: 100%;
+  min-height: 100vh; /* Para ocupar a altura total da tela */
+  width: 100%;
+}
+
+
 .container {
-  margin: 50px;
+  margin: 50px auto; /* Centraliza horizontalmente */
   padding: 25px;
   display: flex;
-  width: auto;
-  gap: 20px;
-  justify-content:space-evenly;
-  align-items: center;
   flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; /* Centraliza o conteúdo */
+  align-items: center; /* Centraliza verticalmente */
   background-color: #424242;
-  /*padding: 35px;*/
   border-radius: 15px;
-  height:auto;
-  font-size: 18px;
+  width: 80%; /* Ajusta largura */
+  max-width: 1200px; /* Define um limite de largura */
+  height: auto;
   box-shadow: 4px 4px 5px #252525;
 }
+
+.row {
+  display: flex;
+  justify-content: center; /* Centraliza os itens na linha */
+  align-items: center;
+  gap: 20px; /* Espaçamento entre as caixas */
+  flex-wrap: wrap;
+  width: 100%; /* Garante que ocupe toda a largura do contêiner */
+}
+
 ion-icon {
   font-size: 6rem;
   color: #ffffff;
-  margin-top: 15px;
+  margin-top: 0; /* Remove margens adicionais */
 }
-ion-icon:hover{
+
+ion-icon:hover {
   color: #ed3232;
 }
+
 .test-box {
   width: 28vw;
   text-align: center;
@@ -137,8 +153,4 @@ ion-icon:hover{
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {
   display: block;
-}
-#price{
-  margin-left: 101px;
-  margin-right: 45;
 }

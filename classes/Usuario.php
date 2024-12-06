@@ -74,7 +74,7 @@ class Usuario
     }
     
     public function pesquisarUsuarios($termo) {
-        $query = "SELECT * FROM usuarios WHERE nome LIKE :termo OR email LIKE :termo";
+        $query = "SELECT * FROM usuarios WHERE nome LIKE :termo";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':termo', '%' . $termo . '%');
         $stmt->execute();
