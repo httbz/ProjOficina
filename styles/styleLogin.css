@@ -8,13 +8,7 @@ main {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: rgb(0, 85, 81);
-  background: linear-gradient(
-    360deg,
-    rgba(0, 85, 81, 1) 0%,
-    rgba(8, 84, 83, 1) 36%,
-    rgba(117, 244, 255, 1) 100%
-  );
+  background: #212121;
   height: 100vh;
 }
 .container {
@@ -22,7 +16,7 @@ main {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #e6e6e6;
+  background-color: #424242;
   padding: 35px;
   border-radius: 15px;
   height: 17vw;
@@ -30,22 +24,23 @@ main {
   border-top-right-radius: 0px;
   font-size: 18px;
   box-shadow: 4px 4px 5px #252525;
+
 }
 .btn {
   float: right;
   border: none;
   border-radius: 50px;
-  background-color: #40bb40;
+  background-color: #ed3232;
   width: 70px;
   height: 40px;
   font-weight: 700;
   font-size: 25px;
   box-shadow: 2px 2px 5px #252525;
+  color: white;
 }
 .btn:hover {
-  color: #40bb40;
-  background-color: black;
-  box-shadow: 7px 7px 5px #252525;
+  color: #ed3232;
+  background-color: white;
 }
 .btn:active {
   opacity: 50%;
@@ -61,11 +56,16 @@ main {
     width: 28vw; 
     text-align: center; 
     color: #e6e6e6; 
-    background-color: #252525; 
+    background-color: #ed3232; 
     padding: 16px; 
     border-top-left-radius: 15px; 
     border-top-right-radius: 15px; 
     font-weight: bold; 
     font-size: 1rem; 
     box-shadow: 4px 0px 5px #252525;
+
+}
+
+label{
+  color: white;
 }

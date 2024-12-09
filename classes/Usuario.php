@@ -9,12 +9,13 @@ class Usuario
     {
         $this->conn = $db;
     }
-    public function registrar($nome, $tipo, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento, $senha)
+
+    public function registrar($nome, $tipo, $senha, $sexo, $dataNasc, $email, $endCidade,$endBairro, $endNum, $endComplemento, $celular, $cpf)
     {
-        $query = "INSERT INTO " . $this->table_name . " (nome, tipo, sexo, dataNasc, celular, email, cpf, endCidade, endBairro, endRua, endNum, endComplemento, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO " . $this->table_name . " (nome, tipo, senha, sexo, dataNasc, email, endCidade, endBairro, endNum, endComplemento, celular, cpf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
         $hashed_password = password_hash($senha, PASSWORD_BCRYPT);
-        $stmt->execute([$nome, $tipo, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento, $hashed_password]);
+        $stmt->execute([$nome, $tipo, $hashed_password, $sexo, $dataNasc, $email, $endCidade,$endBairro, $endNum, $endComplemento, $celular, $cpf]);
     
         return $stmt;
     }
@@ -30,10 +31,7 @@ class Usuario
         }
         return false;
     }
-    public function criar($nome, $tipo, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento, $senha)
-    {
-        return $this->registrar($nome, $tipo, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento, $senha);
-    }
+   
     public function ler()
     {
         $query = "SELECT * FROM " . $this->table_name;
@@ -43,10 +41,16 @@ class Usuario
     }
     public function lerPorId($id)
     {
+        if (!is_numeric($id)) {
+            return false; // ID inválido
+        }
+    
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ?: false; // Retorna false se não encontrar
     }
 
 
@@ -72,6 +76,14 @@ class Usuario
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
 
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function pesquisarUsuarios($termo) {
+        $query = "SELECT * FROM usuarios WHERE nome LIKE :termo";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':termo', '%' . $termo . '%');
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
