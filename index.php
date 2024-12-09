@@ -59,7 +59,7 @@ if (isset($_SESSION['usuario_id'])) {
     </header>
 
     <main class="container py-5">
-        <div class="row justify-content-center g-4">
+        <div class="row justify-content-center g-4 scale-50-hover">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="./gerenciamento/gerenciarVeiculos.php" class="text-decoration-none">
                     <div class="bg-dark rounded-3 d-flex justify-content-center align-items-center shadow"

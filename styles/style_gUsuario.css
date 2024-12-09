@@ -76,15 +76,17 @@ table {
     justify-content: center;
     padding: 2px;
     text-decoration: none;
-    background-color: #ed3232;
+    background-color: transparent;
     height: 30px;
     width: 70px;
     border-radius: 50px;
-    color: white;
+    border: solid 2px #ed3232;
+    color: #ed3232;
+    transition: all 0.6s ease;
 }
 .btn-voltar:hover{
-    background-color: white;
-    color: #ed3232;
+    background-color: #ed3232;
+    color: white;
 }
 .btn-voltar:active{
     opacity: 50%;
@@ -104,6 +106,7 @@ table {
     font-size: 18px;
     font-weight: 700;
     margin: 2px;
+    transition: all 0.6s ease;
 }
 .btn-excluir:hover{
     background-color: white;
@@ -127,6 +130,7 @@ table {
     font-size: 18px;
     font-weight: 700;
     margin: 2px;
+    transition: all 0.6s ease;
 }
 .btn-editar:hover{
     background-color: white;
@@ -149,6 +153,7 @@ table {
     color: white;
     font-weight: 500;
     margin: 2px;
+    transition: all 0.6s ease;
 }
 .btn-pesquisa:hover{
     background-color: white;
@@ -172,10 +177,11 @@ table {
     color: white;
     font-weight: 500;
     margin: 2px;
+    transition: all 0.6s ease;
 }
 .btn-adicionar:hover{
     background-color: white;
-    color: black;
+    color: #ed3232;
     cursor: pointer;
 }
 .btn-adicionar:active{
