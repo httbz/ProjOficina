@@ -9,7 +9,7 @@ if (!isset($_SESSION['usuario_id'])) {
     exit();
 }
 
-$usuario = new Usuario($db);
+$veiculo = new Veiculo($db);
 
 // Verificar se o ID foi fornecido para edição
 if (isset($_GET['id'])) {
@@ -22,7 +22,7 @@ if (isset($_GET['id'])) {
         'modelo' => '',
         'marca' => '',
         'placa' => '',
-        'ano' => '',
+        'zno' => '',
         'fkCliente' => '',
     ];
 }
@@ -71,12 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
-        <h1 class="le">Edição de Usuários</h1>
-        <a href="../gerenciamento/gerenciarUsuarios.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
+        <h1 class="le">Edição de Veículos</h1>
+        <a href="../gerenciamento/gerenciarVeiculos.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
     <main>
         <div class="container mx-auto shadow algin-middle">
-            <h1 class="text-center">Editar <?php echo htmlspecialchars(ucfirst($dadosUsuario['nome'])); ?></h1>
+            <h1 class="text-center">Editar <?php echo htmlspecialchars(ucfirst($dadosVeiculos['nome'])); ?></h1>
             <form method="POST">
                 <div class="row">
                     <div class="col-md-6">

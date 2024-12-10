@@ -1,11 +1,9 @@
 <?php
-include_once './config/config.php';
-include_once './classes/Usuario.php';
+include_once '../config/config.php';
+include_once '../classes/Clientes.php';
 
-
+ $cliente = new Clientes($db);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $cliente = new Usuario($db);
-
     $nome = $_POST['nome'];
     $tipo = $_POST['tipo'];
     $sexo = $_POST['sexo'];
@@ -21,25 +19,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $endComplemento = $_POST['endComplemento'];
 
     $cliente->registrar($nome, $tipo, $senha, $sexo, $dataNasc, $email, $endCidade, $endBairro, $endNum, $endComplemento, $celular, $cpf);
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit();
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Cadastrar Usuário</title>
+    <title>Cadastrar Cliente</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="./styles/styleCadUsuario.css">
+    <link rel="stylesheet" href="../styles/styleCadUsuario.css">
 </head>
 
 <body>
@@ -59,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <main>
         <div class="container">
-            <h1 class="text-center">Cadastrar Usuário</h1>
+            <h1 class="text-center">Cadastrar Clientes</h1>
             <form method="POST">
                 <div class="row">
                     <div class="col-md-6">

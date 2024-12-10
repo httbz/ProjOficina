@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="../gerenciamento/gerenciarUsuarios.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
 
-    <main >
+    <main>
         <br><br><br>
         <div class="container mx-auto shadow ">
             <h1 class="text-center title-container">Cadastrar Usuário</h1>
