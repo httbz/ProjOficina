@@ -22,29 +22,33 @@ header {
   padding: 5px;
   color: white;
 }
+
 .small-img {
   height: 65px;
   width: 65px;
 }
-.btn-voltar {
+.btn-voltar{
   float: right;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2px;
   text-decoration: none;
-  background-color: #ed3232;
+  background-color: transparent;
   height: 30px;
   width: 70px;
   border-radius: 50px;
+  border: solid 2px #ed3232;
+  color: #ed3232;
+  transition: all 0.6s ease;
+}
+.btn-voltar:hover{
+  background-color: #ed3232;
   color: white;
 }
-.btn-voltar:hover {
-  background-color: white;
-  color: #ed3232;
-}
-.btn-voltar:active {
+.btn-voltar:active{
   opacity: 50%;
+  transform: scale(0.9);
 }
 .btn-cad {
   float: right;
@@ -60,8 +64,9 @@ header {
   color: white;
   font-size: 2rem;
   border: none;
-  box-shadow: 5px 5px 10px black;
-  font-weight: 700;
+  box-shadow: 5px 5px 10px #272727;
+  font-weight: 600;
+  transition: all 0.6s ease;
 }
 .btn-cad:hover {
   background-color: white;
@@ -69,6 +74,12 @@ header {
 }
 .btn-cad:active {
   opacity: 50%;
+}
+.title-container{
+  font-weight: 700;
+  font-size: 48px;
+  margin-bottom: 25px;
+  color: white;
 }
 ion-icon {
   font-size: 24px;
@@ -111,19 +122,18 @@ h1 {
   opacity: 50%;
   box-shadow: 7px 7px 5px #252525;
 }
-.control {
-  height: 35px;
-  width: 25vw;
-  border-radius: 5px;
-  border-width: 1px;
-  margin: 5px;
+.form-control {
+  transition: all 0.6s ease;
 }
-.control-max {
-  height: 35px;
-  width: 51vw;
-  border-radius: 5px;
-  border-width: 1px;
-  margin: 5px;
+.form-control:hover{
+  border-color: #ed3232;
+  box-shadow: 0 0 0 0.2rem rgba(237, 50, 50, 0.25);
+  transform: scale(1.1);
+}
+.form-control:focus{
+  border-color: #ed3232;
+  box-shadow: 0 0 0 0.2rem rgba(237, 50, 50, 0.25);
+  transform: scale(1.1);
 }
 .test-box {
   width: 28vw;

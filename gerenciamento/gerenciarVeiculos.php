@@ -50,8 +50,12 @@ $veiculos = $veiculo->pesquisarVeiculos($termo);
             <h1 class="title-container">Veículos</h1>
             <form method="GET">
                 <div class="row">
-                    <input type="text" name="search" placeholder="Pesquisar por nome ou e-mail" class="control">
-                    <button type="submit" class="btn-pesquisa"><ion-icon name="search" style="font-weight: 900;"></ion-icon></button>
+                <div class="search" style="margin-right: 20px">
+                        <input type="text" name="text" class="input" placeholder="Procure por nome...">
+                        <button class="search__btn">
+                            <ion-icon name="search" style="font-weight: 900;"></ion-icon>
+                        </button>
+                    </div>
                     <a href="../cadastro/cadVeiculo.php" class="btn-adicionar"><ion-icon name="add-circle"></ion-icon></a>
                 </div>
             </form>
@@ -73,8 +77,12 @@ $veiculos = $veiculo->pesquisarVeiculos($termo);
                             <td><?php echo $veic['placa']; ?></td>
                             <td>
                                 <div class="row">
-                                    <a href="deletarUsuario.php?id=<?php echo $veic['id']; ?>" class="btn-excluir">Excluir
-                                      <ion-icon name="trash"></ion-icon></a>
+                                <form action="gerenciarVeiculos.php" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                                        <input type="hidden" name="id" value="<?php echo $veic['id']; ?>">
+                                        <button type="submit" name="delete" class="btn-excluir">
+                                            Excluir <ion-icon name="trash"></ion-icon>
+                                        </button>
+                                    </form>
                                     <a href="editarUsuario.php?id=<?php echo $veic['id']; ?>" class="btn-editar">Editar 
                                       <ion-icon name="pencil"></ion-icon></a>
                                 </div>

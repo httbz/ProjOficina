@@ -16,6 +16,9 @@ header {
   padding: 5px;
   color: white;
 }
+body{
+  background-color: #212121 !important; 
+}
 h1 {
   font-size: 16px;
   font-weight: 3rem;
@@ -25,7 +28,6 @@ main {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: #212121;
   height: auto;
   width: 100vw;
 }
@@ -34,21 +36,7 @@ main {
   width: 65px;
 }
 .test {
-  margin-right: 50px;
-  width: 250px;
-  height: 250px;
-  border-radius: 20px;
-  background-color: #212121;
-  gap: 5px;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-  transition: all 0.6s ease;
-}
-.test:hover{
-  transform: scale(1.2);
+  background-color: #212121 !important;
 }
 main {
   display: flex;
@@ -121,8 +109,10 @@ ion-icon:hover {
 
 /* Dropdown button on hover & focus */
 .dropbtn:hover {
+
   ion-icon {
     color: #ed3232;
+
   }
 }
 
@@ -134,6 +124,7 @@ ion-icon:hover {
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
+  transition: all 0.6s ease;
   display: none;
   position: absolute;
   background-color: #f1f1f1;
@@ -148,14 +139,25 @@ ion-icon:hover {
   padding: 12px 16px;
   text-decoration: none;
   display: block;
+  transition: all 0.6s ease;
 }
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
   background-color: #ddd;
 }
+.dropdown-content a:active {
+  transform: scale(0.9);
+}
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {
   display: block;
+}
+
+#img-anim{
+  transition: all 0.6s ease;
+}
+#img-anim:hover{
+  transform: scale(1.3);
 }

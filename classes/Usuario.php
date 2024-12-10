@@ -56,9 +56,10 @@ class Usuario
 
     public function atualizar($id, $nome, $tipo, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento, $senha)
     {
-        $query = "UPDATE " . $this->table_name . " SET nome = ?, tipo = ?, sexo = ?, dataNasc = ?, celular = ?, email = ?, cpf = ?, endCidade = ?, endBairro = ?, endRua = ?, endNum = ?, endComplemento = ? WHERE id = ?";
+        $query = "UPDATE " . $this->table_name . " SET nome = ?, tipo = ?, sexo = ?, dataNasc = ?, celular = ?, email = ?, cpf = ?, endCidade = ?, endBairro = ?, endRua = ?, endNum = ?, endComplemento = ?, senha = ? WHERE id = ?";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$nome, $tipo, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento, $senha, $id]);
+        $hashed_password = password_hash($senha, PASSWORD_BCRYPT);
+        $stmt->execute([$nome, $tipo, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento, $hashed_password, $id]);
         return $stmt;
     }
 
