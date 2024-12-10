@@ -68,7 +68,7 @@ class Cliente
     }
 
     public function listarTodos(){
-        $sql = "SELECT * FROM usuarios";
+        $sql = "SELECT * FROM clientes";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
 

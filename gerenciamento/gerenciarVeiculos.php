@@ -2,6 +2,7 @@
 session_start();
 include_once '../config/config.php';
 include_once '../classes/Veiculos.php';
+include_once '../classes/Clientes.php';
 
 
 if (!isset($_SESSION['autenticado'] )) {
@@ -12,6 +13,9 @@ if (!isset($_SESSION['autenticado'] )) {
 $veiculo = new Veiculo($db);
 $veiculos = $veiculo->listarTodos();
 
+$cliente = new Cliente($db);
+$clientes = $cliente->listarTodos();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
         $veiculo->deletar($_POST['id']);
@@ -19,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
-$termo = $_GET['pesquisa'] ?? '';
+$termo = $_GET['search'] ?? '';
 $veiculos = $veiculo->pesquisarVeiculos($termo);
 
 ?>
@@ -70,9 +74,9 @@ $veiculos = $veiculo->pesquisarVeiculos($termo);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($veiculos as $veic): ?>
+                    <?php foreach ($veiculos as $veic):?>
                         <tr>
-                            <td><?php echo $veic['fkCliente']; ?></td>
+                            <td><?php foreach ($clientes as $cli): $veic['fkCliente'] = $cli['nome']; echo $veic['fkCliente']; endforeach; ?></td>
                             <td><?php echo $veic['modelo']; ?></td>
                             <td><?php echo $veic['placa']; ?></td>
                             <td>

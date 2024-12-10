@@ -9,10 +9,9 @@ main {
   align-items: center;
   flex-direction: column;
   background: #212121;
-  height: 100vh;
+
 }
 header {
-  width: 100vw;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -100,6 +99,7 @@ h1 {
   width: auto;
   font-size: 18px;
   box-shadow: 4px 4px 5px #252525;
+  margin: 0px auto 50px auto;
 }
 .btn {
   float: right;
