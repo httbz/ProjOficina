@@ -1,8 +1,8 @@
 <?php
-class Usuario
+class Cliente
 {
     private $conn;
-    private $table_name = "usuarios";
+    private $table_name = "clientes";
 
 
     public function __construct($db)

@@ -33,7 +33,7 @@ if (isset($_SESSION['usuario_id'])) {
     <title>Oficina</title>
 </head>
 
-<body class="bg-dark text-white">
+<body class="text-white">
     <header class="container-fluid py-3 ">
         <div class="row align-items-center justify-content-between">
             <div class="col-auto">
@@ -46,7 +46,7 @@ if (isset($_SESSION['usuario_id'])) {
                 <div class="dropdown">
                     <ion-icon name="person-circle" class="fs-1 dropdown-toggle" data-bs-toggle="dropdown"></ion-icon>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li class="dropdown-item fw-bold h3"><?php echo $usuarios['nome']?></li>
+                        <li class="dropdown-item fw-bold h3"><?php echo ucfirst($usuarios['nome'])?></li>
                         <li><a class="dropdown-item" href="#">Gerenciar Conta</a></li>
                         <?php if ($usuarios && $usuarios['tipo'] === 'admin'): ?>
                             <li><a href="./gerenciamento/gerenciarUsuarios.php" class="dropdown-item">Gerenciar Usuários</a></li>
@@ -59,28 +59,28 @@ if (isset($_SESSION['usuario_id'])) {
     </header>
 
     <main class="container py-5">
-        <div class="row justify-content-center g-4 scale-50-hover">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="./gerenciamento/gerenciarVeiculos.php" class="text-decoration-none">
-                    <div class="bg-dark rounded-3 d-flex justify-content-center align-items-center shadow"
+        <div class="row justify-content-center g-4 ">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                <a href="./gerenciamento/gerenciarVeiculos.php" class="text-decoration-none " style="transition: all 0.6s ease !important;">
+                    <div class="test rounded-3 d-flex justify-content-center align-items-center shadow "
                         style="height: 250px;">
-                        <ion-icon name="car-sport"></ion-icon>
+                        <ion-icon name="car-sport" id="img-anim"></ion-icon>
                     </div>
                 </a>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="./gerenciamento/gerenciarClientes.php" class="text-decoration-none">
-                    <div class="bg-dark rounded-3 d-flex justify-content-center align-items-center shadow"
+                    <div class="test rounded-3 d-flex justify-content-center align-items-center shadow"
                         style="height: 250px;">
-                        <ion-icon name="person"></ion-icon>
+                        <ion-icon name="person" id="img-anim"></ion-icon>
                     </div>
                 </a>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="./gerenciamento/gerenciarServicos.php" class="text-decoration-none">
-                    <div class="bg-dark rounded-3 d-flex justify-content-center align-items-center shadow"
+                    <div class="test rounded-3 d-flex justify-content-center align-items-center shadow"
                         style="height: 250px;">
-                        <ion-icon name="hammer"></ion-icon>
+                        <ion-icon name="hammer" id="img-anim"></ion-icon>
                     </div>
                 </a>
             </div>
@@ -89,17 +89,17 @@ if (isset($_SESSION['usuario_id'])) {
         <div class="row justify-content-center g-4">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="./gerenciamento/gerenciarProdutos.php" class="text-decoration-none">
-                    <div class="bg-dark rounded-3 d-flex justify-content-center align-items-center shadow"
+                    <div class="test rounded-3 d-flex justify-content-center align-items-center shadow"
                         style="height: 250px;">
-                        <ion-icon name="pricetag"></ion-icon>
+                        <ion-icon name="pricetag" id="img-anim"></ion-icon>
                     </div>
                 </a>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="./gerenciamento/gerenciarEstoque.php" class="text-decoration-none">
-                    <div class="bg-dark rounded-3 d-flex justify-content-center align-items-center shadow"
+                    <div class="test rounded-3 d-flex justify-content-center align-items-center shadow"
                         style="height: 250px;">
-                        <ion-icon name="logo-buffer"></ion-icon>
+                        <ion-icon name="logo-buffer" id="img-anim"></ion-icon>
                     </div>
                 </a>
             </div>

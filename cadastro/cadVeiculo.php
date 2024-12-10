@@ -1,7 +1,10 @@
 <?php
 include_once '../config/config.php';
 include_once '../classes/Veiculos.php';
+include_once '../classes/Clientes.php';
 
+$clientes = new Cliente($db);
+$clientes = $clientes->ler();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $veiculo = new Veiculo($db);
@@ -51,9 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="fkCliente">Proprietário:</label>
-                            <input type="text" name="fkCliente" id="fkCliente" class="form-control"
-                                placeholder="Proprietário..." required>
+                            <label for="fkCliente">Proprietário:</label><br>
+                            <select name="fkCliente" required class="form-control">
+                                <option value="">Selecione o Proprietário:</option>
+                                <?php foreach ($clientes as $cliente): ?>
+                                    <option value="<?php echo $cliente['id']; ?>">
+                                        <?php echo htmlspecialchars($cliente['nome']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">

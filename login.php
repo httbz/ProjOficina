@@ -5,16 +5,15 @@ include_once './classes/Usuario.php';
 
 
 $usuario = new Usuario($db);
-
+   
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['login'])) {
-        // Processar login
         $nome = $_POST['nome'];
         $senha = $_POST['senha'];
         if ($dados_usuario = $usuario->login($nome, $senha)) {
             $_SESSION['usuario_id'] = $dados_usuario['id'];
-            header('Location: index.php');
+            header('Location: ./index.php');
             exit();
         } else {
             $mensagem_erro = "Credenciais inválidas!";
@@ -65,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="">Senha:</label><br>
                     <input type="password" name="senha" required class="control" placeholder="Senha...">
                     <br><br>
-                    <input type="submit"  class="btn d-flex align-items-center justify-content-center" value="➤">                
+                    <input type="submit" name="login" class="btn d-flex align-items-center justify-content-center" value="➤">         
                 </form>
                 <div class="mensagem">
                     <?php if (isset($mensagem_erro))
