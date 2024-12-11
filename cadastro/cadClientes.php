@@ -2,7 +2,7 @@
 include_once '../config/config.php';
 include_once '../classes/Clientes.php';
 
- $cliente = new Clientes($db);
+ $cliente = new Cliente($db);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
     $tipo = $_POST['tipo'];

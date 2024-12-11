@@ -3,8 +3,7 @@ include_once '../config/config.php';
 include_once '../classes/Veiculos.php';
 include_once '../classes/Clientes.php';
 
-$clientes = new Cliente($db);
-$clientes = $clientes->ler();
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $veiculo = new Veiculo($db);

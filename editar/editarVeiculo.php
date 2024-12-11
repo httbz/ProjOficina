@@ -2,6 +2,7 @@
 session_start();
 include_once '../config/config.php';
 include_once '../classes/Veiculos.php';
+include_once '../classes/Clientes.php';
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
@@ -10,54 +11,62 @@ if (!isset($_SESSION['usuario_id'])) {
 }
 
 $veiculo = new Veiculo($db);
+$clientes = new Cliente($db);
+$clientes = $clientes->ler();
 
 // Verificar se o ID foi fornecido para edição
 if (isset($_GET['id'])) {
-    // Recupera os dados do usuário para edição
+    // Recupera os dados do veículo para edição
     $id = $_GET['id'];
     $dadosVeiculos = $veiculo->lerPorId($id);
+    // Verificar se o veículo existe
+    if (!$dadosVeiculos) {
+        // Caso o veículo não exista, redirecionar ou mostrar erro
+        header('Location: ../gerenciamento/gerenciarVeiculos.php');
+        exit();
+    }
 } else {
     // Caso contrário, preenche com valores vazios para cadastro
     $dadosVeiculos = [
         'modelo' => '',
         'marca' => '',
         'placa' => '',
-        'zno' => '',
+        'ano' => '',
         'fkCliente' => '',
     ];
 }
 
 // Processa o formulário para cadastro ou edição
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Recebe os dados do formulário
     $modelo = $_POST['modelo'];
     $marca = $_POST['marca'];
     $ano = $_POST['ano'];
     $fkCliente = $_POST['fkCliente'];
-
+    $placa = $_POST['placa'];
 
     if (isset($_GET['id'])) {
         // Se ID existe, é edição, então atualiza os dados
-        $veiculo->atualizar($id, $fkCliente, $modelo, $marca, ano);
+        $veiculo->atualizar($id, $fkCliente, $modelo, $marca, $ano, $placa);
     } else {
-        // Caso contrário, cria um novo usuário
-        $veiculo->registrar($fkCliente, $modelo, $marca, ano);
+        // Caso contrário, cria um novo veículo
+        $veiculo->registrar($fkCliente, $modelo, $marca, $placa, $ano);
     }
 
-    // Redireciona para a página de gerenciamento de usuários
-    header('Location: ../gerenciamento/gerenciarUsuarios.php');
+    // Redireciona para a página de gerenciamento de veículos
+    header('Location: ../gerenciamento/gerenciarVeiculos.php');
     exit();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/styleCadUsuario.css">
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Custom Styles -->
@@ -65,40 +74,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Ionicons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <title>Editar Usuário</title>
+    <title>Editar Veículo</title>
 </head>
-
 <body>
-<header>
+    <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
         <h1 class="le">Edição de Veículos</h1>
         <a href="../gerenciamento/gerenciarVeiculos.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
     <main>
-        <div class="container mx-auto shadow algin-middle">
-            <h1 class="text-center">Editar <?php echo htmlspecialchars(ucfirst($dadosVeiculos['nome'])); ?></h1>
+        <div class="container">
+            <h1 class="text-center">
+                <?php if (isset($_GET['id'])): ?>
+                    Editar Veículo: <?php echo htmlspecialchars($dadosVeiculos['placa']); ?>
+                <?php else: ?>
+                    Cadastrar Veículo
+                <?php endif; ?>
+            </h1>
             <form method="POST">
                 <div class="row">
                     <div class="col-md-6">
-                        <label>Tipo:</label>
                         <div class="form-group">
-                            <label class="radio-inline">
-                                <input type="radio" id="admin" name="tipo" value="admin" <?php echo $dadosUsuario['tipo'] == 'admin' ? 'checked' : ''; ?> required> Administrador
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" id="funcionario" name="tipo" value="funcionario" <?php echo $dadosUsuario['tipo'] == 'funcionario' ? 'checked' : ''; ?> required> Funcionário
-                            </label>
+                            <label for="fkCliente">Proprietário:</label><br>
+                            <select name="fkCliente" required class="form-control">
+                                <option value="">Selecione o Proprietário:</option>
+                                <?php foreach ($clientes as $cliente): ?>
+                                    <option value="<?php echo $cliente['id']; ?>" 
+                                        <?php echo ($cliente['id'] == $dadosVeiculos['fkCliente']) ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($cliente['nome']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label>Sexo:</label>
                         <div class="form-group">
-                            <label class="radio-inline">
-                                <input type="radio" id="masculino" name="sexo" value="M" <?php echo $dadosUsuario['sexo'] == 'M' ? 'checked' : ''; ?> required> Masculino
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" id="feminino" name="sexo" value="F" <?php echo $dadosUsuario['sexo'] == 'F' ? 'checked' : ''; ?> required> Feminino
-                            </label>
+                            <label for="modelo">Modelo:</label>
+                            <input type="text" name="modelo" id="modelo" class="form-control" placeholder="Modelo..."
+                                value="<?php echo htmlspecialchars($dadosVeiculos['modelo']); ?>" required>
                         </div>
                     </div>
                 </div>
@@ -106,130 +119,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="nome">Nome:</label>
-                            <input type="text" name="nome" id="nome" class="form-control" placeholder="Nome..."
-                                required value="<?php echo htmlspecialchars($dadosUsuario['nome']); ?>">
+                            <label for="marca">Marca:</label>
+                            <input type="text" name="marca" id="marca" class="form-control" placeholder="Marca..."
+                                value="<?php echo htmlspecialchars($dadosVeiculos['marca']); ?>" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="senha">Senha:</label>
-                            <input type="password" name="senha" id="senha" class="form-control" placeholder="Senha..."
-                                required>
+                            <label for="ano">Ano:</label>
+                            <input type="text" name="ano" id="ano" class="form-control"
+                                placeholder="Ex: 2009, 2011, 1979..."
+                                value="<?php echo htmlspecialchars($dadosVeiculos['ano']); ?>" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
-                            <label for="dataNasc">Data de Nascimento:</label>
-                            <input type="date" name="dataNasc" id="dataNasc" class="form-control" required value="<?php echo htmlspecialchars($dadosUsuario['dataNasc']); ?>">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="cpf">Cpf:</label>
-                            <input type="text" name="cpf" id="cpf" class="form-control"
-                                oninput="applyMask(this, cpfMask)" placeholder="Cpf..." maxlength="14" required value="<?php echo htmlspecialchars($dadosUsuario['cpf']); ?>">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="celular">Celular:</label>
-                            <input type="text" name="celular" id="celular" class="form-control"
-                                placeholder="Telefone..." maxlength="15" oninput="applyMask(this, phoneMask)" required value="<?php echo htmlspecialchars($dadosUsuario['celular']); ?>">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="email">E-mail:</label>
-                            <input type="email" name="email" id="email" class="form-control" placeholder="E-Mail..."
-                                required value="<?php echo htmlspecialchars($dadosUsuario['email']); ?>">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="endCidade">Cidade:</label>
-                            <input type="text" name="endCidade" id="endCidade" class="form-control"
-                                placeholder="Cidade..." required value="<?php echo htmlspecialchars($dadosUsuario['endCidade']); ?>">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="endBairro">Bairro:</label>
-                            <input type="text" name="endBairro" id="endBairro" class="form-control"
-                                placeholder="Bairro..." required value="<?php echo htmlspecialchars($dadosUsuario['endBairro']); ?>">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="endRua">Rua/Logradouro:</label>
-                            <input type="text" name="endRua" id="endRua" class="form-control"
-                                placeholder="Rua/Logradouro..." required value="<?php echo htmlspecialchars($dadosUsuario['endRua']); ?>">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="endNum">Número:</label>
-                            <input type="text" name="endNum" id="endNum" class="form-control" placeholder="Número..."
-                                required value="<?php echo htmlspecialchars($dadosUsuario['endNum']); ?>">
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label for="endComplemento">Complemento:</label>
-                            <input type="text" name="endComplemento" id="endComplemento" class="form-control"
-                                placeholder="Complemento..." required value="<?php echo htmlspecialchars($dadosUsuario['endComplemento']); ?>">
+                            <label for="placa">Placa:</label>
+                            <input type="text" name="placa" id="placa" class="form-control"
+                                placeholder="Ex: XXX111, ZZZ2Z22..."
+                                value="<?php echo htmlspecialchars($dadosVeiculos['placa']); ?>" required>
                         </div>
                     </div>
                 </div>
 
                 <button type="submit" class="btn-cad">
-                <ion-icon name="pencil"></ion-icon> Atualizar
+                    <i class="fa fa-plus"></i> 
+                    <?php echo isset($_GET['id']) ? 'Atualizar' : 'Cadastrar'; ?>
                 </button>
             </form>
         </div>
     </main>
-        <script>
-
-        function applyMask(input, maskFunction) {
-            input.value = maskFunction(input.value);
-        }
-
-        // Máscara para CPF
-        function cpfMask(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        }
-
-        // Máscara para CEP
-        function cepMask(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/(\d{5})(\d)/, '$1-$2');
-        }
-
-        // Máscara para Telefone
-        function phoneMask(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/(\d{2})(\d)/, '($1) $2')
-                .replace(/(\d{5})(\d{1,4})$/, '$1-$2');
-        }
-    </script>
 </body>
-
 </html>

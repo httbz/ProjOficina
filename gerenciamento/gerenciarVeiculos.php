@@ -2,15 +2,17 @@
 session_start();
 include_once '../config/config.php';
 include_once '../classes/Veiculos.php';
+include_once '../classes/Clientes.php';
 
-
-if (!isset($_SESSION['autenticado'] )) {
+if (!isset($_SESSION['autenticado'])) {
     header('Location: ../login.php');
     exit();
 }
 
 $veiculo = new Veiculo($db);
 $veiculos = $veiculo->listarTodos();
+
+$cliente = new Cliente($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
@@ -19,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
+
 $termo = $_GET['pesquisa'] ?? '';
 $veiculos = $veiculo->pesquisarVeiculos($termo);
 
@@ -30,7 +33,7 @@ $veiculos = $veiculo->pesquisarVeiculos($termo);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Usuários</title>
+    <title>Gerenciar Veículos</title>
     <link rel="stylesheet" href="../styles/style_gUsuario.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -50,8 +53,8 @@ $veiculos = $veiculo->pesquisarVeiculos($termo);
             <h1 class="title-container">Veículos</h1>
             <form method="GET">
                 <div class="row">
-                <div class="search" style="margin-right: 20px">
-                        <input type="text" name="text" class="input" placeholder="Procure por nome...">
+                    <div class="search" style="margin-right: 20px">
+                        <input type="text" name="pesquisa" class="input" placeholder="Procure por nome...">
                         <button class="search__btn">
                             <ion-icon name="search" style="font-weight: 900;"></ion-icon>
                         </button>
@@ -72,12 +75,16 @@ $veiculos = $veiculo->pesquisarVeiculos($termo);
                 <tbody>
                     <?php foreach ($veiculos as $veic): ?>
                         <tr>
-                            <td><?php echo $veic['fkCliente']; ?></td>
+                            <?php 
+                                // Buscar o cliente associado ao veículo
+                                $clienteDados = $cliente->lerPorId($veic['fkCliente']);
+                            ?>
+                            <td><?php echo $clienteDados['nome']; ?></td>
                             <td><?php echo $veic['modelo']; ?></td>
                             <td><?php echo $veic['placa']; ?></td>
                             <td>
                                 <div class="row">
-                                <form action="gerenciarVeiculos.php" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                                    <form action="gerenciarVeiculos.php" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?');">
                                         <input type="hidden" name="id" value="<?php echo $veic['id']; ?>">
                                         <button type="submit" name="delete" class="btn-excluir">
                                             Excluir <ion-icon name="trash"></ion-icon>
