@@ -1,7 +1,7 @@
 # Documentação do Sistema Oficina
 
 ## Visão Geral
-Este projeto é um sistema para gestão de oficinas, contendo funcionalidades para cadastro e gerenciamento de clientes, produtos, usuários, veículos, serviços e estoque. Inclui um sistema de login e logout, além de interações com um banco de dados relacional para armazenar as informações necessárias.
+Este projeto é um sistema para gestão de oficinas, contendo funcionalidades para cadastro e gerenciamento de clientes, produtos, usuários, veículos, serviços e estoque. Inclui um sistema de login e logout, além de interações com um banco de dados relacional para armazenar as informações necessárias. Segue credenciais padrões para logar no sistema, Usuário: admin; senha: admin
 
 ## Estrutura do Projeto
 
@@ -15,6 +15,9 @@ Arquivos dedicados ao cadastro de entidades no sistema:
 - **cadClientes.php**: Cadastro de clientes.
 - **cadProduto.php**: Cadastro de produtos.
 - **cadUsuario.php**: Cadastro de usuários.
+- **cadVeiculo.php**: Cadastro de veículos.
+- **cadServico.php**: Cadastro de serviços.
+- **cadEstoque.php**: Cadastro de estoque.
 
 ## Banco de Dados
 O banco de dados é configurado através do script **bdoficina.sql**, que define tabelas e relações para:
