@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1 class="le">Edição de Veículos</h1>
         <a href="../gerenciamento/gerenciarVeiculos.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
-    <main>
+    <main style="height: 100vh;">
         <div class="container">
             <h1 class="text-center">
                 <?php if (isset($_GET['id'])): ?>

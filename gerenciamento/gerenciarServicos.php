@@ -5,7 +5,7 @@ include_once './classes/Usuario.php';
 
 
 if (!isset($_SESSION['autenticado'] )) {
-    header('Location: index.php');
+    header('Location: ../dashboard.php');
     exit();
 }
 
@@ -43,7 +43,7 @@ $usuarios = $usuario->pesquisarUsuarios($termo);
     <header>
         <img src="./assets/img/logo.png" alt="Logo" class="small-img">
         <h1 class="title">Gerenciamento de Usuário</h1>
-        <a href="index.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
+        <a href="../dashboard.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
     <main>
         <div class="container">

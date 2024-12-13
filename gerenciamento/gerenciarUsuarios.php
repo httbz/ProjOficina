@@ -3,14 +3,22 @@ session_start();
 include_once '../config/config.php';
 include_once '../classes/Usuario.php';
 
-
 if (!isset($_SESSION['autenticado'])) {
     header('Location: ../login.php');
     exit();
 }
 
 $usuario = new Usuario($db);
-$usuarios = $usuario->listarTodos();
+
+// Captura o termo de pesquisa (caso exista)
+$termo = $_GET['pesquisa'] ?? '';
+
+// Verifica se o termo de pesquisa foi fornecido. Se não, lista todos os usuários.
+if ($termo) {
+    $usuarios = $usuario->pesquisarUsuarios($termo); // Pesquisa os usuários com o termo
+} else {
+    $usuarios = $usuario->listarTodos(); // Lista todos os usuários caso não haja pesquisa
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
@@ -19,9 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
-$termo = $_GET['pesquisa'] ?? '';
-$usuarios = $usuario->pesquisarUsuarios($termo);
-
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +48,7 @@ $usuarios = $usuario->pesquisarUsuarios($termo);
     <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
         <h1 class="title">Gerenciamento de Usuário</h1>
-        <a href="../index.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
+        <a href="../dashboard.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
     <main>
         <div class="container">
@@ -51,16 +56,12 @@ $usuarios = $usuario->pesquisarUsuarios($termo);
             <form method="GET">
                 <div class="row">
                     <div class="search" style="margin-right: 20px">
-                        <input type="text" name="text" class="input" placeholder="Procure por nome..." name="pesquisa">
+                        <input type="text" name="pesquisa" class="input" placeholder="Procure por nome..." value="<?php echo htmlspecialchars($termo); ?>">
                         <button class="search__btn">
                             <ion-icon name="search" style="font-weight: 900;"></ion-icon>
                         </button>
                     </div>
-                    <!--<input type="text" name="search" id="search" placeholder="Pesquisar por Usuário" class="control">
-
-                    <button type="submit" class="btn-pesquisa"><ion-icon name="search" style="font-weight: 900;"></ion-icon></button> -->
-                    <a href="../cadastro/cadUsuario.php" class="btn-adicionar"><ion-icon
-                            name="add-circle"></ion-icon></a>
+                    <a href="../cadastro/cadUsuario.php" class="btn-adicionar"><ion-icon name="add-circle"></ion-icon></a>
                 </div>
             </form>
 
@@ -69,29 +70,39 @@ $usuarios = $usuario->pesquisarUsuarios($termo);
                     <tr>
                         <th>Nome</th>
                         <th>Tipo</th>
+                        <th>E-mail</th>
+                        <th>Celular</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($usuarios as $user): ?>
+                    <!-- Exibe a mensagem de "nenhum usuário encontrado" se não houver resultados da pesquisa -->
+                    <?php if (empty($usuarios)): ?>
                         <tr>
-                            <td><?php echo $user['nome']; ?></td>
-                            <td><?php echo $user['tipo']; ?></td>
-                            <td>
-                                <div class="row">
-                                <form action="gerenciarUsuarios.php" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?');">
-                                        <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-                                        <button type="submit" name="delete" class="btn-excluir">
-                                            Excluir <ion-icon name="trash"></ion-icon>
-                                        </button>
-                                    </form>
-                                    <a href="../editar/editarUsuario.php?id=<?php echo $user['id']; ?>"
-                                        class="btn-editar">Editar
-                                        <ion-icon name="pencil"></ion-icon></a>
-                                </div>
-                            </td>
+                            <td colspan="3">Nenhum usuário encontrado para o termo "<?php echo htmlspecialchars($termo); ?>"</td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php else: ?>
+                        <?php foreach ($usuarios as $user): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($user['nome']); ?></td>
+                                <td><?php echo htmlspecialchars($user['tipo']); ?></td>
+                                <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                <td><?php echo htmlspecialchars($user['celular']); ?></td>
+                                <td>
+                                    <div class="row">
+                                        <form action="gerenciarUsuarios.php" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                                            <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+                                            <button type="submit" name="delete" class="btn-excluir">
+                                                Excluir <ion-icon name="trash"></ion-icon>
+                                            </button>
+                                        </form>
+                                        <a href="../editar/editarUsuario.php?id=<?php echo $user['id']; ?>"
+                                           class="btn-editar">Editar <ion-icon name="pencil"></ion-icon></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

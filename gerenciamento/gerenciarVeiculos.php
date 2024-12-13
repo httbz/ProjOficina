@@ -22,8 +22,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+
+// Captura o termo de pesquisa (caso exista)
 $termo = $_GET['pesquisa'] ?? '';
-$veiculos = $veiculo->pesquisarVeiculos($termo);
+
+// Verifica se o termo de pesquisa foi fornecido. Se não, lista todos os usuários.
+if ($termo) {
+    $veiculo = $veiculo->pesquisarVeiculos($termo); // Pesquisa os usuários com o termo
+} else {
+    $veiculo = $veiculo->listarTodos(); // Lista todos os usuários caso não haja pesquisa
+}
 
 ?>
 
@@ -46,7 +54,7 @@ $veiculos = $veiculo->pesquisarVeiculos($termo);
     <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
         <h1 class="title">Gerenciamento de Veículos</h1>
-        <a href="../index.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
+        <a href="../dashboard.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
     <main>
         <div class="container">
@@ -54,7 +62,7 @@ $veiculos = $veiculo->pesquisarVeiculos($termo);
             <form method="GET">
                 <div class="row">
                     <div class="search" style="margin-right: 20px">
-                        <input type="text" name="pesquisa" class="input" placeholder="Procure por nome...">
+                        <input type="text" name="pesquisa" class="input" placeholder="Procure por Placa..." value="<?php echo htmlspecialchars($termo); ?>">
                         <button class="search__btn">
                             <ion-icon name="search" style="font-weight: 900;"></ion-icon>
                         </button>

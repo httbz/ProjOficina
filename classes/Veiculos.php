@@ -56,10 +56,16 @@ class Veiculo
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function pesquisarVeiculos($termo) {
-        $query = "SELECT * FROM veiculos WHERE fkCliente OR placa LIKE :termo";
+    public function pesquisarVeiculos($termo)
+    {
+        if (empty($termo)) {
+            return []; // Se o termo estiver vazio, retorna um array vazio
+        }
+
+        $query = "SELECT * FROM veiculos WHERE placa LIKE :termo";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindValue(':termo', '%' . $termo . '%');
+        // Utiliza o bindValue para garantir que o valor seja corretamente escapado e evitamos SQL Injection
+        $stmt->bindValue(':termo', '%' . $termo . '%', PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

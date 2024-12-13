@@ -3,7 +3,8 @@ include_once '../config/config.php';
 include_once '../classes/Veiculos.php';
 include_once '../classes/Clientes.php';
 
-
+$clientes = new Cliente($db);
+$cliente = $clientes->ler();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $veiculo = new Veiculo($db);
@@ -46,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="../gerenciamento/gerenciarVeiculos.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
 
-    <main>
+    <main  style="height: 100vh;">
         <div class="container">
             <h1 class="text-center">Cadastrar Veículo</h1>
             <form method="POST">
@@ -56,9 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label for="fkCliente">Proprietário:</label><br>
                             <select name="fkCliente" required class="form-control">
                                 <option value="">Selecione o Proprietário:</option>
-                                <?php foreach ($clientes as $cliente): ?>
-                                    <option value="<?php echo $cliente['id']; ?>">
-                                        <?php echo htmlspecialchars($cliente['nome']); ?></option>
+                                <?php foreach ($cliente as $cli): ?>
+                                    <option value="<?php echo $cli['id']; ?>">
+                                        <?php echo htmlspecialchars($cli['nome']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -94,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-group">
                             <label for="placa">Placa:</label>
                             <input type="text" name="placa" id="placa" class="form-control"
-                                placeholder="Ex: XXX111, ZZZ2Z22..." required>
+                                placeholder="Ex: XXX000, VVV 1V11..." required>
                         </div>
                     </div>
                 </div>

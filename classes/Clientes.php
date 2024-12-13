@@ -9,10 +9,10 @@ class Cliente
     {
         $this->conn = $db;
     }
-    public function registrar( $nome, $sexo, $celular, $email, $dataNasc, $cpf, $cep, $endCidade, $endBairro, $endNum, $endComplemento, $endRua )    {
-        $query = "INSERT INTO " . $this->table_name . " (nome, sexo, celular, email, dataNasc, cpf, cep, endCidade, endBairro, endNum, endComplemento, endRua) VALUES (?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
+    public function registrar( $nome, $sexo, $celular, $email, $dataNasc, $cpf, $endCidade, $endBairro, $endNum, $endComplemento, $endRua )    {
+        $query = "INSERT INTO " . $this->table_name . " (nome, sexo, celular, email, dataNasc, cpf, endCidade, endBairro, endNum, endComplemento, endRua) VALUES (?, ?, ?, ?, ?,?,?,?,?,?,?)";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$nome, $sexo, $celular, $email, $dataNasc, $cpf, $cep, $endCidade, $endBairro, $endNum, $endComplemento, $endRua]);
+        $stmt->execute([$nome, $sexo, $celular, $email, $dataNasc, $cpf, $endCidade, $endBairro, $endNum, $endComplemento, $endRua]);
         return $stmt;
     }
 
@@ -32,11 +32,11 @@ class Cliente
     }
 
 
-    public function atualizar($id, $nome, $sexo, $dataNasc, $celular, $email, $cpf, $cep, $endCidade, $endBairro, $endComplemento, $endRua, $endNum)
+    public function atualizar($id, $nome, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endComplemento, $endRua, $endNum)
     {
-        $query = "UPDATE " . $this->table_name . " SET nome = ?, sexo = ?, fone = ?, email = ? WHERE id = ?";
+        $query = "UPDATE " . $this->table_name . " SET nome = ?, sexo = ?, dataNasc = ?, celular = ?, email = ?, cpf = ?, endCidade = ?, endBairro = ?, endComplemento = ?, endRUa = ?, endNum = ? WHERE id = ?";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$nome, $sexo, $celular, $email, $id, $dataNasc, $cpf, $cep, $endCidade, $endBairro, $endNum, $endComplemento, $endRua]);
+        $stmt->execute([$id, $nome, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endComplemento, $endRua, $endNum]);
         return $stmt;
     }
 

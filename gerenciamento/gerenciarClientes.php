@@ -4,18 +4,18 @@ include_once '../config/config.php';
 include_once '../classes/Clientes.php';
 
 
-if (!isset($_SESSION['autenticado'] )) {
-    header('Location: index.php');
+if (!isset($_SESSION['autenticado'])) {
+    header('Location: dashboard.php');
     exit();
 }
 
-$clientes = new Cliente($db);
-$clientes = $clientes->listarTodos();
+$cliente = new Cliente($db);
+$clientes = $cliente->listarTodos();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
-        $clientes->deletar($_POST['id']);
-        header("Location: gerenciarclientes.php");
+        $cliente->deletar($_POST['id']);
+        header("Location: ./gerenciarClientes.php");
         exit();
     }
 }
@@ -42,26 +42,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
-        <h1 class="title">Gerenciamento de Clentes</h1>
-        <a href="../index.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
+        <h1 class="title">Gerenciamento de Clientes</h1>
+        <a href="../dashboard.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
     <main>
         <div class="container">
             <h1 class="title-container">Clientes</h1>
             <form method="GET">
-            <div class="search" style="margin-right: 20px">
-                        <input type="text" name="text" class="input" placeholder="Procure por nome...">
-                        <button class="search__btn">
-                            <ion-icon name="search" style="font-weight: 900;"></ion-icon>
-                        </button>
-                    </div>
+                <div class="search" style="margin-right: 20px">
+                    <input type="text" name="text" class="input" placeholder="Procure por nome...">
+                    <button class="search__btn">
+                        <ion-icon name="search" style="font-weight: 900;"></ion-icon>
+                    </button>
+                    <a href="../cadastro/cadClientes.php" class="btn-adicionar" style="margin-left: 15px;"><ion-icon
+                            name="add-circle"></ion-icon></a>
+                </div>
+
             </form>
 
             <table>
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Tipo</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -69,13 +73,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php foreach ($clientes as $cli): ?>
                         <tr>
                             <td><?php echo $cli['nome']; ?></td>
-                            <td><?php echo $cli['tipo']; ?></td>
+                            <td><?php echo $cli['email']; ?></td>
+                            <td><?php echo $cli['celular']; ?></td>
                             <td>
                                 <div class="row">
-                                    <a href="deletarclientes.php?id=<?php echo $cli ['id']; ?>" class="btn-excluir">Excluir
-                                      <ion-icon name="trash"></ion-icon></a>
-                                    <a href="editarclientes.php?id=<?php echo $cli ['id']; ?>" class="btn-editar">Editar 
-                                      <ion-icon name="pencil"></ion-icon></a>
+                                    <form action="gerenciarClientes.php" method="POST"
+                                        onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                                        <input type="hidden" name="id" value="<?php echo $cli['id']; ?>">
+                                        <button type="submit" name="delete" class="btn-excluir">
+                                            Excluir <ion-icon name="trash"></ion-icon>
+                                        </button>
+                                    </form>
+                                    <a href="../editar/editarCliente.php?id=<?php echo $cli['id']; ?>" class="btn-editar">Editar
+                                        <ion-icon name="pencil"></ion-icon></a>
                                 </div>
                             </td>
                         </tr>
