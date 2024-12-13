@@ -5,19 +5,16 @@ include_once '../classes/Clientes.php';
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ../login.php');
+    header('Location: ../index.php');
     exit();
 }
 
 $cliente = new Cliente($db);
 
-// Verificar se o ID foi fornecido para edição
 if (isset($_GET['id'])) {
-    // Recupera os dados do usuário para edição
     $id = $_GET['id'];
     $dadosCliente = $cliente->lerPorId($id);
 } else {
-    // Caso contrário, preenche com valores vazios para cadastro
     $dadosCliente = [
         'nome' => '',
         'sexo' => '',
@@ -33,7 +30,6 @@ if (isset($_GET['id'])) {
     ];
 }
 
-// Processa o formulário para cadastro ou edição
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
     $sexo = $_POST['sexo'];
@@ -48,14 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $endComplemento = $_POST['endComplemento'];
 
     if (isset($_GET['id'])) {
-        // Se ID existe, é edição, então atualiza os dados
         $cliente->atualizar($id, $nome, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento);
     } else {
-        // Caso contrário, cria um novo usuário
         $cliente->registrar($nome, $sexo, $dataNasc, $email, $dataNasc, $cpf,$endNum, $endComplemento, $endRua, $celular, $cpf);
     }
 
-    // Redireciona para a página de gerenciamento de usuários
     header('Location: ../gerenciamento/gerenciarClientes.php');
     exit();
 }
@@ -86,12 +79,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1 class="le">Edição de Clientes</h1>
         <a href="../gerenciamento/gerenciarClientes.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
-    <main>
+    <main style="height: 100vh;">
         <div class="container mx-auto shadow algin-middle">
             <h1 class="text-center">Editar <?php echo htmlspecialchars(ucfirst($dadosCliente['nome'])); ?></h1>
             <form method="POST">
                 <div class="row">
-
+                <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nome">Nome:</label>
+                            <input type="text" name="nome" id="nome" class="form-control" placeholder="Nome..."
+                                required value="<?php echo htmlspecialchars($dadosCliente['nome']); ?>">
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <label>Sexo:</label>
                         <div class="form-group">
@@ -103,18 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </label>
                         </div>
                     </div>
+
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="nome">Nome:</label>
-                            <input type="text" name="nome" id="nome" class="form-control" placeholder="Nome..."
-                                required value="<?php echo htmlspecialchars($dadosCliente['nome']); ?>">
-                        </div>
-                    </div>
-                    
-                </div>
 
                 <div class="row">
                     <div class="col-md-6">
