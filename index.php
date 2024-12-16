@@ -3,76 +3,70 @@ session_start();
 include_once './config/config.php';
 include_once './classes/Usuario.php';
 
-
 $usuario = new Usuario($db);
-   
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['login'])) {
-        $nome = $_POST['nome'];
-        $senha = $_POST['senha'];
-        if ($dados_usuario = $usuario->login($nome, $senha)) {
-            $_SESSION['usuario_id'] = $dados_usuario['id'];
-            header('Location: ./dashboard.php');
-            exit();
-        } else {
-            $mensagem_erro = "Credenciais inválidas!";
-        }
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forgot_password'])) {
+    $email = $_POST['email'];
+    // Gerar um token único
+    $token = bin2hex(random_bytes(50));
+    $expira = date('Y-m-d H:i:s', strtotime('+1 hour'));
+    
+    // Salvar token e validade no banco de dados
+    $stmt = $db->prepare("UPDATE usuarios SET reset_token = ?, reset_expira = ? WHERE email = ?");
+    $stmt->execute([$token, $expira, $email]);
+
+    // Enviar e-mail com o link de redefinição
+    $reset_link = "http://seusite.com/reset_password.php?token=$token";
+    $assunto = "Redefinição de Senha";
+    $mensagem = "Clique no link para redefinir sua senha: $reset_link";
+    mail($email, $assunto, $mensagem);
+
+    echo "Um link de redefinição foi enviado para o seu e-mail.";
 }
 ?>
 <!DOCTYPE html>
-<html>
-<link rel="stylesheet" href="./styles/styleLogin.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-    href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto+Condensed&display=swap"
-    rel="stylesheet">
-
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="../20/bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../20/dist/css/AdminLTE.min.css">
-    <!-- favicon -->
-    <link rel="shortcut icon" href="../20/dist/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="../20/dist/favicon.ico" type="image/x-icon" />
-
-    <link rel="stylesheet" href="../20/dist/css/skins/skin-blue.min.css">
-
+<html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOGIN</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./styles/styleLogin.css">
 </head>
-
 <body>
-    <main>
-        <div class="test-box">
-            <h1>LOGIN</h1>
-        </div>
-        <div class="container">
-            <div class="box">
-                <form method="POST">
-                    <label for="">Usuario:</label><br>
-                    <input type="text" name="nome" required class="control" placeholder="Usuario...">
-                    <br><br>
-                    <label for="">Senha:</label><br>
-                    <input type="password" name="senha" required class="control" placeholder="Senha...">
-                    <br><br>
-                    <input type="submit" name="login" class="btn d-flex align-items-center justify-content-center" value="➤">         
-                </form>
-                <div class="mensagem">
-                    <?php if (isset($mensagem_erro))
-                        echo '<p>' . $mensagem_erro . '</p>'; ?>
-                </div>
+    <div class="container">
+        <h1 class="login-title">LOGIN</h1>
+        <form method="POST" name="login" class="login-form">
+            <div class="input-group">
+                <label for="nome">Usuário:</label>
+                <input type="text" name="nome" id="nome" placeholder="Digite seu usuário" required>
             </div>
-
-    </main>
+            <div class="input-group">
+                <label for="senha">Senha:</label>
+                <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+            </div>
+                <!-- Link para "Esqueceu a senha?" -->
+    <p><a href="#" onclick="document.getElementById('forgot-form').style.display='block', document.getElementById('login').style.display='none'">Esqueceu a senha?</a></p>
+            <button type="submit" name="login" class="btn-login">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+            <!-- Formulário "Esqueceu a senha?" -->
+    <div id="forgot-form" style="display:none;">
+        <form method="POST">
+            <input type="email" name="email" placeholder="Digite seu e-mail" required>
+            <button type="submit" name="forgot_password" class="btn-danger"><i class="fas fa-arrow-right"></i></button>
+        </form>
+    </div>
+    </div>
 </body>
-
 </html>

@@ -46,12 +46,16 @@ if (isset($_SESSION['usuario_id'])) {
                 <div class="dropdown">
                     <ion-icon name="person-circle" class="fs-1 dropdown-toggle" data-bs-toggle="dropdown"></ion-icon>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li class="dropdown-item fw-bold h3"><?php echo ucfirst($usuarios['nome'])?></li>
-                        <li><a class="dropdown-item" href="#">Gerenciar Conta</a></li>
+                        <li class="dropdown-item fw-bold h3 text-primary"><?php echo ucfirst($usuarios['nome'])?></li>
                         <?php if ($usuarios && $usuarios['tipo'] === 'admin'): ?>
                             <li><a href="./gerenciamento/gerenciarUsuarios.php" class="dropdown-item">Gerenciar Usuários</a></li>
                         <?php endif; ?>
-                        <li><a class="dropdown-item" href="logout.php">Sair</a></li>
+                        <li><a class="dropdown-item" href="./gerenciamento/gerenciarVeiculos.php">Veículos</a></li>
+                        <li><a class="dropdown-item" href="./gerenciamento/gerenciarClientes.php">Clientes</a></li>
+                        <li><a class="dropdown-item" href="./gerenciamento/gerenciarServicos.php">Serviços</a></li>
+                        <li><a class="dropdown-item" href="./gerenciamento/gerenciarProdutos.php">Produtos</a></li>
+                        <li><a class="dropdown-item" href="./gerenciamento/gerenciarEstoque.php">Estoque</a></li>
+                        <li><a class="dropdown-item text-danger" href="logout.php">Sair</a></li>
                     </ul>
                 </div>
             </div>

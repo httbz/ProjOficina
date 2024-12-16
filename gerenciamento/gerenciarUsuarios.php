@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <th>Nome</th>
                         <th>Tipo</th>
                         <th>E-mail</th>
-                        <th>Celular</th>
+                        <th style="width: 450px ;">Celular</th>
                         <th>Ações</th>
                     </tr>
                 </thead>

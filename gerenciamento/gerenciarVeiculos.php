@@ -14,6 +14,17 @@ $veiculos = $veiculo->listarTodos();
 
 $cliente = new Cliente($db);
 
+// Captura o termo de pesquisa (caso exista)
+$termo = $_GET['pesquisa'] ?? '';
+
+// Verifica se o termo de pesquisa foi fornecido. Se não, lista todos os usuários.
+if ($termo) {
+    $veiculos = $veiculo->pesquisarVeiculos($termo); // Pesquisa os usuários com o termo
+} else {
+    $veiculos = $veiculo->listarTodos(); // Lista todos os usuários caso não haja pesquisa
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
         $veiculo->deletar($_POST['id']);

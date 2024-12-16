@@ -26,10 +26,31 @@ CREATE TABLE `clientes` (
 -- Extraindo dados da tabela `clientes`
 --
 
-INSERT INTO `clientes` (`id`, `nome`, `sexo`, `dataNasc`, `email`, `celular`, `cpf`, `endBairro`, `endCidade`, `endComplemento`, `endNum`, `endRua`) VALUES
+INSERT INTO `clientes` (`nome`, `sexo`, `dataNasc`, `email`, `celular`, `cpf`, `endBairro`, `endCidade`, `endComplemento`, `endNum`, `endRua`) VALUES
 ('Julia Matos', 'F', '2024-12-12', 'Jm@jm', '(12) 32312-3123', '123.123.123', 'N/a', 'N/a', 'N/a', 'N/a', 'N/a'),
 ('Jorge Campos', 'M', '2024-12-04', 'jc@jc', '(12) 31231-2312', '123.123.123', 'N/a', 'N/a', 'N/a', 'N/a', 'N/a'),
 ('fantinel', 'M', '2024-12-12', '123@123', '(12) 31231-2323', '123.123.123', 'N/a', 'N/a', 'N/a', 'N/a', 'N/a');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `produtos`
+--
+
+CREATE TABLE `produtos` (
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `descricao` varchar(1000) NOT NULL,
+  `valorCusto` double NOT NULL,
+  `valorVenda` double NOT NULL,
+  `referencia` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `produtos`
+--
+
+INSERT INTO `produtos` (`descricao`, `valorCusto`, `valorVenda`, `referencia`) VALUES
+('Bieleta', 30, 300, '12312ffas');
 
 -- --------------------------------------------------------
 
@@ -43,29 +64,8 @@ CREATE TABLE `estoque` (
   `qtd` int(11) NOT NULL,
   `qtdMax` int(11) NOT NULL,
   `qtdMin` int(11) NOT NULL,
-  FOREIGN KEY (`fkProdutos`) REFERENCES `produtos` (`id`) 
+  FOREIGN KEY (`fkProduto`) REFERENCES `produtos` (`id`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `produtos`
---
-
-CREATE TABLE `produtos` (
-  `id` int(11) NOT NULL,
-  `descricao` varchar(1000) NOT NULL,
-  `valorCusto` double NOT NULL,
-  `valorVenda` double NOT NULL,
-  `referencia` varchar(1000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Extraindo dados da tabela `produtos`
---
-
-INSERT INTO `produtos` (`descricao`, `valorCusto`, `valorVenda`, `referencia`) VALUES
-('Bieleta', 30, 300, '12312ffas');
 
 -- --------------------------------------------------------
 
@@ -128,3 +128,12 @@ CREATE TABLE `veiculos` (
    FOREIGN KEY (`fkCliente`) REFERENCES `clientes` (`id`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Alter Table
+--
+
+ALTER TABLE usuarios
+ADD COLUMN reset_token VARCHAR(255) NULL,
+ADD COLUMN reset_expira DATETIME NULL;
