@@ -1,39 +1,22 @@
 <?php
-class Usuario
+class Servicos
 {
     private $conn;
-    private $table_name = "usuarios";
+    private $table_name = "servicos";
 
 
     public function __construct($db)
     {
         $this->conn = $db;
     }
-    public function registrar($nome, $sexo, $fone, $email, $senha)
+    public function registrar($descricao, $valor)
     {
-        $query = "INSERT INTO " . $this->table_name . " (nome, sexo, fone, email, senha) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO " . $this->table_name . " (descricao, valor) VALUES (?, ?)";
         $stmt = $this->conn->prepare($query);
-        $hashed_password = password_hash($senha, PASSWORD_BCRYPT);
-        $stmt->execute([$nome, $sexo, $fone, $email, $hashed_password]);
+        $stmt->execute([$descricao, $valor]);
         return $stmt;
     }
-
-
-    public function login($email, $senha)
-    {
-        $query = "SELECT * FROM " . $this->table_name . " WHERE email = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$email]);
-        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($usuario && password_verify($senha, $usuario['senha'])) {
-            return $usuario;
-        }
-        return false;
-    }
-    public function criar($nome, $sexo, $fone, $email, $senha)
-    {
-        return $this->registrar($nome, $sexo, $fone, $email, $senha);
-    }
+    
     public function ler()
     {
         $query = "SELECT * FROM " . $this->table_name;
@@ -50,11 +33,11 @@ class Usuario
     }
 
 
-    public function atualizar($id, $nome, $sexo, $fone, $email)
+    public function atualizar($descricao, $valor, $id)
     {
-        $query = "UPDATE " . $this->table_name . " SET nome = ?, sexo = ?, fone = ?, email = ? WHERE id = ?";
+        $query = "UPDATE " . $this->table_name . " SET descricao = ?, valor = ? where id = ?";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$nome, $sexo, $fone, $email, $id]);
+        $stmt->execute([$descricao, $valor,$id]);
         return $stmt;
     }
 
@@ -68,10 +51,24 @@ class Usuario
     }
 
     public function listarTodos(){
-        $sql = "SELECT * FROM usuarios";
+        $sql = "SELECT * FROM servicos";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
 
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function pesquisarServicos($termo)
+    {
+        if (empty($termo)) {
+            return []; // Se o termo estiver vazio, retorna um array vazio
+        }
+
+        $query = "SELECT * FROM servicos WHERE descricao LIKE :termo";
+        $stmt = $this->conn->prepare($query);
+        // Utiliza o bindValue para garantir que o valor seja corretamente escapado e evitamos SQL Injection
+        $stmt->bindValue(':termo', '%' . $termo . '%', PDO::PARAM_STR);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

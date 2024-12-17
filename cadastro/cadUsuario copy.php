@@ -1,79 +1,30 @@
 <?php
-session_start();
 include_once '../config/config.php';
-include_once '../classes/Usuario.php';
+include_once '../classes/Servicos.php';
 
-// Verificar se o usuário está logado
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ../login.php');
-    exit();
-}
 
-$usuario = new Usuario($db);
-
-// Verificar se o ID foi fornecido para edição
-if (isset($_GET['id'])) {
-    // Recupera os dados do usuário para edição
-    $id = $_GET['id'];
-    $dadosUsuario = $usuario->lerPorId($id);
-} else {
-    // Caso contrário, preenche com valores vazios para cadastro
-    $dadosUsuario = [
-        'nome' => '',
-        'tipo' => '',
-        'sexo' => '',
-        'celular' => '',
-        'email' => '',
-        'dataNasc' => '',
-        'cpf' => '',
-        'endCidade' => '',
-        'endBairro' => '',
-        'endRua' => '',
-        'endNum' => '',
-        'endComplemento' => '',
-        'senha' => ''
-    ];
-}
-
-// Processa o formulário para cadastro ou edição
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['nome'];
-    $tipo = $_POST['tipo'];
-    $sexo = $_POST['sexo'];
-    $dataNasc = $_POST['dataNasc'];
-    $celular = $_POST['celular'];
-    $email = $_POST['email'];
-    $cpf = $_POST['cpf'];
-    $endCidade = $_POST['endCidade'];
-    $endBairro = $_POST['endBairro'];
-    $endRua = $_POST['endRua'];
-    $endNum = $_POST['endNum'];
-    $senha = $_POST['senha'];
-    $endComplemento = $_POST['endComplemento'];
+    $servico = new Servicos($db);
 
-    if (isset($_GET['id'])) {
-        // Se ID existe, é edição, então atualiza os dados
-        $usuario->atualizar($id, $nome, $tipo, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento, $senha);
-    } else {
-        // Caso contrário, cria um novo usuário
-        $usuario->registrar($nome, $tipo, $senha, $sexo, $dataNasc, $email, $endCidade, $endBairro, $endNum, $endComplemento, $celular, $cpf);
-    }
+    $descricao = $_POST['descricao'];
+    $valor = $_POST['valor'];
 
-    // Redireciona para a página de gerenciamento de usuários
+    $servico->registrar($descricao, $valor, );
     header('Location: ../gerenciamento/gerenciarUsuarios.php');
     exit();
 }
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/styleCadUsuario.css">
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Cadastrar Usuário</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Custom Styles -->
@@ -81,56 +32,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Ionicons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <title>Editar Usuário</title>
 </head>
 
 <body>
-<header>
+    <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
-        <h1 class="le">Edição de Usuários</h1>
+        <h1 class="le title-container">Cadastro de Serviços</h1>
         <a href="../gerenciamento/gerenciarUsuarios.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
-    <main>
-        <div class="container mx-auto shadow algin-middle">
-            <h1 class="text-center">Editar <?php echo htmlspecialchars(ucfirst($dadosUsuario['nome'])); ?></h1>
-            <form method="POST">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>Tipo:</label>
-                        <div class="form-group">
-                            <label class="radio-inline">
-                                <input type="radio" id="admin" name="tipo" value="admin" <?php echo $dadosUsuario['tipo'] == 'admin' ? 'checked' : ''; ?> required> Administrador
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" id="funcionario" name="tipo" value="funcionario" <?php echo $dadosUsuario['tipo'] == 'funcionario' ? 'checked' : ''; ?> required> Funcionário
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label>Sexo:</label>
-                        <div class="form-group">
-                            <label class="radio-inline">
-                                <input type="radio" id="masculino" name="sexo" value="M" <?php echo $dadosUsuario['sexo'] == 'M' ? 'checked' : ''; ?> required> Masculino
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" id="feminino" name="sexo" value="F" <?php echo $dadosUsuario['sexo'] == 'F' ? 'checked' : ''; ?> required> Feminino
-                            </label>
-                        </div>
-                    </div>
-                </div>
 
+    <main>
+        <br><br><br>
+        <div class="container mx-auto shadow ">
+            <h1 class="text-center title-container">Cadastrar Usuário</h1>
+            <form method="POST">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="nome">Nome:</label>
                             <input type="text" name="nome" id="nome" class="form-control" placeholder="Nome..."
-                                required value="<?php echo htmlspecialchars($dadosUsuario['nome']); ?>">
+                                required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="senha">Senha:</label>
-                            <input type="password" name="senha" id="senha" class="form-control" placeholder="Senha..."
+                            <input type="text" name="senha" id="senha" class="form-control" placeholder="Senha..."
                                 required>
                         </div>
                     </div>
@@ -140,14 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="dataNasc">Data de Nascimento:</label>
-                            <input type="date" name="dataNasc" id="dataNasc" class="form-control" required value="<?php echo htmlspecialchars($dadosUsuario['dataNasc']); ?>">
+                            <input type="date" name="dataNasc" id="dataNasc" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="cpf">Cpf:</label>
                             <input type="text" name="cpf" id="cpf" class="form-control"
-                                oninput="applyMask(this, cpfMask)" placeholder="Cpf..." maxlength="14" required value="<?php echo htmlspecialchars($dadosUsuario['cpf']); ?>">
+                                oninput="applyMask(this, cpfMask)" placeholder="Cpf..." maxlength="14" required>
                         </div>
                     </div>
                 </div>
@@ -157,14 +84,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-group">
                             <label for="celular">Celular:</label>
                             <input type="text" name="celular" id="celular" class="form-control"
-                                placeholder="Telefone..." maxlength="15" oninput="applyMask(this, phoneMask)" required value="<?php echo htmlspecialchars($dadosUsuario['celular']); ?>">
+                                placeholder="Telefone..." maxlength="15" oninput="applyMask(this, phoneMask)" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="email">E-mail:</label>
                             <input type="email" name="email" id="email" class="form-control" placeholder="E-Mail..."
-                                required value="<?php echo htmlspecialchars($dadosUsuario['email']); ?>">
+                                required>
                         </div>
                     </div>
                 </div>
@@ -174,21 +101,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-group">
                             <label for="endCidade">Cidade:</label>
                             <input type="text" name="endCidade" id="endCidade" class="form-control"
-                                placeholder="Cidade..." required value="<?php echo htmlspecialchars($dadosUsuario['endCidade']); ?>">
+                                placeholder="Cidade..." required>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="endBairro">Bairro:</label>
                             <input type="text" name="endBairro" id="endBairro" class="form-control"
-                                placeholder="Bairro..." required value="<?php echo htmlspecialchars($dadosUsuario['endBairro']); ?>">
+                                placeholder="Bairro..." required>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="endRua">Rua/Logradouro:</label>
                             <input type="text" name="endRua" id="endRua" class="form-control"
-                                placeholder="Rua/Logradouro..." required value="<?php echo htmlspecialchars($dadosUsuario['endRua']); ?>">
+                                placeholder="Rua/Logradouro..." required>
                         </div>
                     </div>
                 </div>
@@ -198,25 +125,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-group">
                             <label for="endNum">Número:</label>
                             <input type="text" name="endNum" id="endNum" class="form-control" placeholder="Número..."
-                                required value="<?php echo htmlspecialchars($dadosUsuario['endNum']); ?>">
+                                required>
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
                             <label for="endComplemento">Complemento:</label>
                             <input type="text" name="endComplemento" id="endComplemento" class="form-control"
-                                placeholder="Complemento..." required value="<?php echo htmlspecialchars($dadosUsuario['endComplemento']); ?>">
+                                placeholder="Complemento..." required>
                         </div>
                     </div>
                 </div>
 
                 <button type="submit" class="btn-cad">
-                <ion-icon name="pencil"></ion-icon> Atualizar
+                    <i class="fa fa-plus"></i> Cadastrar
                 </button>
             </form>
         </div>
     </main>
-        <script>
+
+    <!-- Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
 
         function applyMask(input, maskFunction) {
             input.value = maskFunction(input.value);
@@ -246,6 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 .replace(/(\d{5})(\d{1,4})$/, '$1-$2');
         }
     </script>
+
 </body>
 
 </html>

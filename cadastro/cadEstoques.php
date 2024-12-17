@@ -1,33 +1,34 @@
 <?php
 include_once '../config/config.php';
-include_once '../classes/Produtos.php';
 include_once '../classes/Estoques.php';
+include_once '../classes/Produtos.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $produto = new Produtos ($db);
+    $estoque = new Estoques ($db);
 
-    $descricao = $_POST['descricao'];
-    $valorCusto = $_POST['valorCusto'];
-    $valorVenda = $_POST['valorVenda'];
-    $referencia = $_POST['referencia'];
+    $qtd = $_POST['qtd'];
+    $qtdMax = $_POST['qtdMax'];
+    $qtdMin = $_POST['qtdMin'];
+    
     
 
-    $produto->registrar($descricao, $valorCusto, $valorVenda, $referencia);
-    header('Location: ../gerenciamento/gerenciarProdutos.php');
+    $estoque->registrar($qtd, $qtdMax, $qtdMin);
+    header('Location: ../gerenciamento/gerenciarEstoques.php');
     exit();
-
-    $estoque = new Estoques($db);
-    $estoques = $estoque->ler();
 }
 
+$produto = new Produtos($db);
+$produtos = $produto->ler();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
+
+
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Cadastrar Produto</title>
+    <title>Cadastrar Estoque</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -43,27 +44,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
-        <h1 class="le title-container">Cadastro de Produto</h1>
-        <a href="../gerenciamento/gerenciarProdutos.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
+        <h1 class="le title-container">Cadastro de Estoque</h1>
+        <a href="../gerenciamento/gerenciarEstoque.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
 
     <main>
         <br><br><br>
         <div class="container mx-auto shadow ">
-            <h1 class="text-center title-container">Cadastrar Produtos</h1>
+            <h1 class="text-center title-container">Cadastrar Estoque</h1>
             <form method="POST">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="nome">Descrição:</label>
-                            <input type="text" name="descricao" id="descricao" class="form-control" placeholder="Descrição..."
+                            <label>Produto:</label>
+                        <select name="fkProduto" required class="form-control">
+                                <option value="">Selecione o Produto:</option>
+                                <?php foreach ($produto as $prod): ?>
+                                    <option value="<?php echo $prod['id']; ?>">
+                                        <?php echo htmlspecialchars($prod['descricao']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <label for="nome">Quantidade Máxima</label>
+                            <input type="text" name="qtdMax" id="qtdMax" class="form-control" placeholder="Quantidade máxima..."
                                 required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="senha">Valor de custo:</label>
-                            <input type="text" name="valorCusto" id="valorCusto" class="form-control" placeholder="Valor de custo..."
+                            <label for="senha">Quantidade minima</label>
+                            <input type="text" name="qtdMin" id="qtdMin" class="form-control" placeholder="Quantidade minima..."
                                 required>
                         </div>
                     </div>
@@ -73,17 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="dataNasc">Valor de venda:</label>
-                            <input type="text" name="valorVenda" id="valorVenda" class="form-control" required placeholder="Valor de venda...">
+                            <label for="dataNasc">Quantidade</label>
+                            <input type="text" name="qtd" id="qtd" class="form-control" required placeholder="Quantidade...">
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="senha">Referencia:</label>
-                            <input type="text" name="referencia" id="referencia" class="form-control" placeholder="Referecia..."
-                                required>
-                        </div>
-                    </div>
+                    
                     </div>
                     
 

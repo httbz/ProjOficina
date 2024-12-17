@@ -75,8 +75,8 @@ CREATE TABLE `estoque` (
 
 CREATE TABLE `servicos` (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `descricao` int(11) NOT NULL,
-  `valor` int(11) NOT NULL
+  `descricao` varchar(1000) NOT NULL,
+  `valor` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

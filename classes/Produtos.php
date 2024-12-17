@@ -1,38 +1,27 @@
 <?php
-class Usuario
+class Produtos
 {
     private $conn;
-    private $table_name = "usuarios";
+    private $table_name = "produtos";
 
 
     public function __construct($db)
     {
         $this->conn = $db;
     }
-    public function registrar($nome, $sexo, $fone, $email, $senha)
+    public function registrar($descricao, $valorCusto, $valorVenda, $referencia)
     {
-        $query = "INSERT INTO " . $this->table_name . " (nome, sexo, fone, email, senha) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO " . $this->table_name . " (descricao, valorCusto, valorVenda, referencia) VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
-        $hashed_password = password_hash($senha, PASSWORD_BCRYPT);
-        $stmt->execute([$nome, $sexo, $fone, $email, $hashed_password]);
+       
+        $stmt->execute([$descricao, $valorCusto, $valorVenda, $referencia]);
         return $stmt;
     }
 
-
-    public function login($email, $senha)
+    
+    public function criar($descricao, $valorCusto, $valorVenda, $referencia)
     {
-        $query = "SELECT * FROM " . $this->table_name . " WHERE email = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$email]);
-        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($usuario && password_verify($senha, $usuario['senha'])) {
-            return $usuario;
-        }
-        return false;
-    }
-    public function criar($nome, $sexo, $fone, $email, $senha)
-    {
-        return $this->registrar($nome, $sexo, $fone, $email, $senha);
+        return $this->registrar($descricao, $valorCusto, $valorVenda, $referencia);
     }
     public function ler()
     {
@@ -50,11 +39,11 @@ class Usuario
     }
 
 
-    public function atualizar($id, $nome, $sexo, $fone, $email)
+    public function atualizar($id,$descricao, $valorCusto, $valorVenda, $referencia)
     {
-        $query = "UPDATE " . $this->table_name . " SET nome = ?, sexo = ?, fone = ?, email = ? WHERE id = ?";
+        $query = "UPDATE " . $this->table_name . " SET descricao = ?, valorCusto = ?, valorVenda = ?, referencia = ? WHERE id = ?";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$nome, $sexo, $fone, $email, $id]);
+        $stmt->execute([$descricao, $valorCusto, $valorVenda, $referencia, $id]);
         return $stmt;
     }
 
@@ -72,6 +61,13 @@ class Usuario
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
 
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function pesquisarProdutos($termo) {
+        $query = "SELECT * FROM produtos WHERE referencia LIKE :termo";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':termo', '%' . $termo . '%');
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
