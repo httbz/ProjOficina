@@ -12,6 +12,14 @@ if (!isset($_SESSION['autenticado'])) {
 $cliente = new Cliente($db);
 $clientes = $cliente->listarTodos();
 
+$termo = $_GET['pesquisa'] ?? '';
+
+if ($termo) {
+    $clientes = $cliente->pesquisarClientes($termo);
+} else {
+    $clientes = $cliente->listarTodos(); 
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
         $cliente->deletar($_POST['id']);
@@ -19,9 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
-//$termo = $_GET['pesquisa'] ?? '';
-//$clientes = $clientes->pesquisarcliente($termo);
-
 ?>
 
 <!DOCTYPE html>
@@ -49,15 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <h1 class="title-container">Clientes</h1>
             <form method="GET">
-                <div class="search" style="margin-right: 20px">
-                    <input type="text" name="text" class="input" placeholder="Procure por nome...">
-                    <button class="search__btn">
-                        <ion-icon name="search" style="font-weight: 900;"></ion-icon>
-                    </button>
-                    <a href="../cadastro/cadClientes.php" class="btn-adicionar" style="margin-left: 15px;"><ion-icon
-                            name="add-circle"></ion-icon></a>
+                <div class="row">
+                    <div class="search" style="margin-right: 20px">
+                        <input type="text" name="pesquisa" class="input" placeholder="Procure por nome..." value="<?php echo htmlspecialchars($termo); ?>">
+                        <button class="search__btn">
+                            <ion-icon name="search" style="font-weight: 900;"></ion-icon>
+                        </button>
+                    </div>
+                    <a href="../cadastro/cadUsuario.php" class="btn-adicionar"><ion-icon name="add-circle"></ion-icon></a>
                 </div>
-
             </form>
 
             <table>

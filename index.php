@@ -5,12 +5,25 @@ include_once './classes/Usuario.php';
 
 $usuario = new Usuario($db);
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['login'])) {
+        $nome = $_POST['nome'];
+        $senha = $_POST['senha'];
+        if ($dados_usuario = $usuario->login($nome, $senha)) {
+            $_SESSION['usuario_id'] = $dados_usuario['id'];
+            header('Location: ./dashboard.php');
+            exit();
+        } else {
+            $mensagem_erro = "Credenciais inválidas!";
+        }
+    }
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forgot_password'])) {
     $email = $_POST['email'];
     // Gerar um token único
     $token = bin2hex(random_bytes(50));
     $expira = date('Y-m-d H:i:s', strtotime('+1 hour'));
-    
+
     // Salvar token e validade no banco de dados
     $stmt = $db->prepare("UPDATE usuarios SET reset_token = ?, reset_expira = ? WHERE email = ?");
     $stmt->execute([$token, $expira, $email]);
@@ -26,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forgot_password'])) {
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forgot_password'])) {
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./styles/styleLogin.css">
 </head>
+
 <body>
     <div class="container">
         <h1 class="login-title">LOGIN</h1>
@@ -54,19 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forgot_password'])) {
                 <label for="senha">Senha:</label>
                 <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
             </div>
-                <!-- Link para "Esqueceu a senha?" -->
-    <p><a href="#" onclick="document.getElementById('forgot-form').style.display='block', document.getElementById('login').style.display='none'">Esqueceu a senha?</a></p>
+            <!-- Link para "Esqueceu a senha?" -->
+            <p><a href="solicitar_recuperacao.php">Esqueceu a senha?</a></p>
+
             <button type="submit" name="login" class="btn-login">
                 <i class="fas fa-arrow-right"></i>
             </button>
         </form>
-            <!-- Formulário "Esqueceu a senha?" -->
-    <div id="forgot-form" style="display:none;">
-        <form method="POST">
-            <input type="email" name="email" placeholder="Digite seu e-mail" required>
-            <button type="submit" name="forgot_password" class="btn-danger"><i class="fas fa-arrow-right"></i></button>
-        </form>
-    </div>
     </div>
 </body>
+
 </html>

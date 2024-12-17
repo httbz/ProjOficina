@@ -98,8 +98,8 @@ CREATE TABLE `usuarios` (
   `endNum` varchar(10) NOT NULL,
   `endComplemento` varchar(400) NOT NULL,
   `endrua` varchar(400) NOT NULL,
-  `celular` int(15) NOT NULL,
-  `cpf` int(11) NOT NULL
+  `celular` varchar(15) NOT NULL,
+  `cpf` varchar(14) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -134,6 +134,5 @@ CREATE TABLE `veiculos` (
 -- Alter Table
 --
 
-ALTER TABLE usuarios
-ADD COLUMN reset_token VARCHAR(255) NULL,
-ADD COLUMN reset_expira DATETIME NULL;
+ALTER TABLE usuarios ADD COLUMN codigo_verificacao VARCHAR(10) DEFAULT
+NULL;

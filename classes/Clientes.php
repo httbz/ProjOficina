@@ -56,5 +56,19 @@ class Cliente
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function pesquisarClientes($termo)
+    {
+        if (empty($termo)) {
+            return []; // Se o termo estiver vazio, retorna um array vazio
+        }
+
+        $query = "SELECT * FROM clientes WHERE nome LIKE :termo";
+        $stmt = $this->conn->prepare($query);
+        // Utiliza o bindValue para garantir que o valor seja corretamente escapado e evitamos SQL Injection
+        $stmt->bindValue(':termo', '%' . $termo . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
