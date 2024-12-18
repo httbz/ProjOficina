@@ -57,16 +57,22 @@ class Produtos
     }
 
     public function listarTodos(){
-        $sql = "SELECT * FROM usuarios";
+        $sql = "SELECT * FROM produtos";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function pesquisarProdutos($termo) {
-        $query = "SELECT * FROM produtos WHERE referencia LIKE :termo";
+    public function pesquisarProdutos($termo)
+    {
+        if (empty($termo)) {
+            return []; // Se o termo estiver vazio, retorna um array vazio
+        }
+
+        $query = "SELECT * FROM produtos WHERE referencia LIKE :termo OR descricao LIKE :termo";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindValue(':termo', '%' . $termo . '%');
+        // Utiliza o bindValue para garantir que o valor seja corretamente escapado e evitamos SQL Injection
+        $stmt->bindValue(':termo', '%' . $termo . '%', PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

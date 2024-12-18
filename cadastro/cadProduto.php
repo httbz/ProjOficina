@@ -16,8 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: ../gerenciamento/gerenciarProdutos.php');
     exit();
 
-    $estoque = new Estoques($db);
-    $estoques = $estoque->ler();
 }
 
 ?>
@@ -63,23 +61,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="senha">Valor de custo:</label>
-                            <input type="text" name="valorCusto" id="valorCusto" class="form-control" placeholder="Valor de custo..."
+                            <input type="number" name="valorCusto" id="valorCusto" class="form-control" placeholder="Valor de custo..."
                                 required>
                         </div>
                     </div>
-                  
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="dataNasc">Valor de venda:</label>
-                            <input type="text" name="valorVenda" id="valorVenda" class="form-control" required placeholder="Valor de venda...">
+                            <input type="number" name="valorVenda" id="valorVenda" class="form-control" required placeholder="Valor de venda...">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="senha">Referencia:</label>
+                            <label for="senha">Referência:</label>
                             <input type="text" name="referencia" id="referencia" class="form-control" placeholder="Referecia..."
                                 required>
                         </div>

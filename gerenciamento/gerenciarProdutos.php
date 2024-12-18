@@ -4,18 +4,25 @@ include_once '../config/config.php';
 include_once '../classes/Produtos.php';
 
 $produto = new Produtos($db);
-$produtos = $produto->listarTodos();
+// Captura o termo de pesquisa (caso exista)
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
-        $produtos->deletar($_POST['id']);
+        $produto = new Produtos($db);
+        $produto->deletar($_POST['id']);
         header("Location: gerenciarProdutos.php");
         exit();
     }
 }
 $termo = $_GET['pesquisa'] ?? '';
-$produtos = $produto->pesquisarProdutos($termo);
 
+// Verifica se o termo de pesquisa foi fornecido. Se não, lista todos os usuários.
+if ($termo) {
+    $produtos = $produto->pesquisarProdutos($termo); // Pesquisa os usuários com o termo
+} else {
+    $produtos = $produto->listarTodos(); // Lista todos os usuários caso não haja pesquisa
+}
 ?>
 
 <!DOCTYPE html>
@@ -37,15 +44,15 @@ $produtos = $produto->pesquisarProdutos($termo);
     <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
         <h1 class="title">Gerenciamento de Produto</h1>
-        <a href="index.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
+        <a href="../dashboard.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
     <main>
         <div class="container">
             <h1 class="title-container">Produtos</h1>
             <form method="GET">
                 <div class="row">
-                <div class="search" style="margin-right: 20px">
-                        <input type="text" name="text" class="input" placeholder="Procure por nome...">
+                    <div class="search" style="margin-right: 20px">
+                        <input type="text" name="pesquisa" class="input" placeholder="Procure por descrição ou referência..." value="<?php echo htmlspecialchars($termo); ?>">
                         <button class="search__btn">
                             <ion-icon name="search" style="font-weight: 900;"></ion-icon>
                         </button>

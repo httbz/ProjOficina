@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1 class="le">Edição de Clientes</h1>
         <a href="../gerenciamento/gerenciarClientes.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
-    <main>
+    <main style="height: 100vh;">
         <div class="container mx-auto shadow algin-middle">
             <h1 class="text-center">Editar <?php echo htmlspecialchars(ucfirst($dadosCliente['nome'])); ?></h1>
             <form method="POST">
