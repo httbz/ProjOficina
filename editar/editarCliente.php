@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['id'])) {
         $cliente->atualizar($id, $nome, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endRua, $endNum, $endComplemento);
     } else {
-        $cliente->registrar($nome, $sexo, $dataNasc, $email, $dataNasc, $cpf,$endNum, $endComplemento, $endRua, $celular, $cpf);
+        $cliente->registrar($nome, $sexo,  $celular, $email, $dataNasc, $cpf, $cpf, $endCidade, $endNum, $endComplemento, $endRua);
     }
 
     header('Location: ../gerenciamento/gerenciarClientes.php');
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1 class="le">Edição de Clientes</h1>
         <a href="../gerenciamento/gerenciarClientes.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
-    <main style="height: 100vh;">
+    <main>
         <div class="container mx-auto shadow algin-middle">
             <h1 class="text-center">Editar <?php echo htmlspecialchars(ucfirst($dadosCliente['nome'])); ?></h1>
             <form method="POST">

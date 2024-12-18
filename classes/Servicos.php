@@ -9,11 +9,11 @@ class Servicos
     {
         $this->conn = $db;
     }
-    public function registrar($descricao, $valor)
+    public function registrar($descricao, $valor, $tipo)
     {
-        $query = "INSERT INTO " . $this->table_name . " (descricao, valor) VALUES (?, ?)";
+        $query = "INSERT INTO " . $this->table_name . " (descricao, valor, tipo) VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$descricao, $valor]);
+        $stmt->execute([$descricao, $valor, $tipo]);
         return $stmt;
     }
     
@@ -33,11 +33,11 @@ class Servicos
     }
 
 
-    public function atualizar($descricao, $valor, $id)
+    public function atualizar($descricao, $valor, $tipo, $id)
     {
-        $query = "UPDATE " . $this->table_name . " SET descricao = ?, valor = ? where id = ?";
+        $query = "UPDATE " . $this->table_name . " SET descricao = ?, valor = ?, tipo = ? where id = ?";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$descricao, $valor,$id]);
+        $stmt->execute([$descricao, $valor, $tipo, $id]);
         return $stmt;
     }
 
@@ -64,7 +64,7 @@ class Servicos
             return []; // Se o termo estiver vazio, retorna um array vazio
         }
 
-        $query = "SELECT * FROM servicos WHERE descricao LIKE :termo";
+        $query = "SELECT * FROM servicos WHERE descricao LIKE :termo OR tipo LIKE :termo";
         $stmt = $this->conn->prepare($query);
         // Utiliza o bindValue para garantir que o valor seja corretamente escapado e evitamos SQL Injection
         $stmt->bindValue(':termo', '%' . $termo . '%', PDO::PARAM_STR);

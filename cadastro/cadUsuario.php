@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cpf = $_POST['cpf'];
     $endCidade = $_POST['endCidade'];
     $endBairro = $_POST['endBairro'];
-    $endRua = $_POST['endRua'];
+    $endrua = $_POST['endrua'];
     $endNum = $_POST['endNum'];
     $senha = $_POST['senha'];
     $endComplemento = $_POST['endComplemento'];
 
-    $usuario->registrar($nome, $tipo, $senha, $sexo, $dataNasc, $email, $endCidade, $endBairro, $endNum, $endComplemento, $celular, $cpf);
+    $usuario->registrar($nome, $tipo, $senha, $sexo, $dataNasc, $email, $endCidade, $endBairro, $endNum, $endComplemento, $endrua, $celular, $cpf);
     header('Location: ../gerenciamento/gerenciarUsuarios.php');
     exit();
 }
@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1 class="text-center title-container">Cadastrar Usuário</h1>
             <form method="POST">
                 <div class="row">
+                    
                     <div class="col-md-6">
                         <label>Tipo:</label>
                         <div class="form-group">
@@ -94,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="senha">Senha:</label>
-                            <input type="text" name="senha" id="senha" class="form-control" placeholder="Senha..."
+                            <input type="password" name="senha" id="senha" class="form-control" placeholder="Senha..."
                                 required>
                         </div>
                     </div>
@@ -150,8 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="endRua">Rua/Logradouro:</label>
-                            <input type="text" name="endRua" id="endRua" class="form-control"
+                            <label for="endrua">Rua/Logradouro:</label>
+                            <input type="text" name="endrua" id="endrua" class="form-control"
                                 placeholder="Rua/Logradouro..." required>
                         </div>
                     </div>

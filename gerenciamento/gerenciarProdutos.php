@@ -79,7 +79,7 @@ $produtos = $produto->pesquisarProdutos($termo);
                                             Excluir <ion-icon name="trash"></ion-icon>
                                         </button>
                                     </form>
-                                    <a href="../editar/editarProdutos.php?php echo $prod['id']; ?>" class="btn-editar">Editar 
+                                    <a href="../editar/editarProdutos.php?id=<?php echo $prod['id']; ?>" class="btn-editar">Editar 
                                       <ion-icon name="pencil"></ion-icon></a>
                                 </div>
                             </td>

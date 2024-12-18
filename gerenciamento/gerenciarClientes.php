@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <ion-icon name="search" style="font-weight: 900;"></ion-icon>
                         </button>
                     </div>
-                    <a href="../cadastro/cadUsuario.php" class="btn-adicionar"><ion-icon name="add-circle"></ion-icon></a>
+                    <a href="../cadastro/cadClientes.php" class="btn-adicionar"><ion-icon name="add-circle"></ion-icon></a>
                 </div>
             </form>
 
@@ -71,6 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <th>Nome</th>
                         <th>E-mail</th>
                         <th>Telefone</th>
+                        <th>Cpf</th>
+                        <th>Cidade</th>
+                        <th>Rua</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -80,6 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td><?php echo $cli['nome']; ?></td>
                             <td><?php echo $cli['email']; ?></td>
                             <td><?php echo $cli['celular']; ?></td>
+                            <td><?php echo $cli['cpf']; ?></td>
+                            <td><?php echo $cli['endCidade']; ?></td>
+                            <td><?php echo $cli['endRua']; ?></td>
                             <td>
                                 <div class="row">
                                     <form action="gerenciarClientes.php" method="POST"

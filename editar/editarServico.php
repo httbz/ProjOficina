@@ -1,11 +1,11 @@
 <?php
 session_start();
 include_once '../config/config.php';
-include_once '../classes/Servico.php';
+include_once '../classes/Servicos.php';
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ../login.php');
+    header('Location: ../index.php');
     exit();
 }
 
@@ -20,25 +20,27 @@ if (isset($_GET['id'])) {
     // Caso contrário, preenche com valores vazios para cadastro
     $dadosServico = [
         'descricao' => '',
-        'valor' => ''
-        ];
+        'valor' => '',
+        'tipo' => ''
+    ];
 }
 
 // Processa o formulário para cadastro ou edição
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $descricao = $_POST['descricao'];
-    $valor= $_POST['valor'];
-    
+    $valor = $_POST['valor'];
+    $tipo = $_POST['tipo'];
+
     if (isset($_GET['id'])) {
         // Se ID existe, é edição, então atualiza os dados
-        $servico->atualizar( $descricao, $valor,$id);
+        $servico->atualizar($descricao, $valor, $tipo, $id);
     } else {
         // Caso contrário, cria um novo usuário
-        $servico->registrar($descricao,$valor);
+        $servico->registrar($descricao, $valor, $tipo);
     }
 
     // Redireciona para a página de gerenciamento de usuários
-    header('Location: ../gerenciamento/gerenciarUsuarios.php');
+    header('Location: ../gerenciamento/gerenciarServicos.php');
     exit();
 }
 ?>
@@ -50,8 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/styleCadUsuario.css">
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Custom Styles -->
@@ -59,27 +61,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Ionicons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <title>Editar Usuário</title>
+    <title>Editar Serviço</title>
 </head>
 
 <body>
-<header>
+    <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
-        <h1 class="le">Edição de Usuários</h1>
+        <h1 class="le">Edição de Serviço</h1>
         <a href="../gerenciamento/gerenciarServicos.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
-    <main>
+    <main style="height: 100vh;">
         <div class="container mx-auto shadow algin-middle">
-            <h1 class="text-center">Editar <?php echo htmlspecialchars(ucfirst($dadosUsuario['nome'])); ?></h1>
+            <h1 class="text-center">Editar Serviço</h1>
             <form method="POST">
-             
 
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="Descricao">Descricao:</label>
+                            <input type="text" name="descricao" id="descricao" class="form-control"
+                                placeholder="Descrição..." required
+                                value="<?php echo htmlspecialchars($dadosServico['descricao']); ?>">
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="Descricao">Descricao:</label>
-                            <input type="text" name="descricao" id="descricao" class="form-control" placeholder="Descrição..."
-                                required value="<?php echo htmlspecialchars($dadosServico['descricao']); ?>">
+                            <label for="Descricao">Tipo de Serviço:</label>
+                            <select name="tipo" id="tipo" class="form-control">
+                                <option value="">Selecione o Tipo</option>
+                                <option value="Mecânico" <?php echo $dadosServico['tipo'] == 'Mecânico' ? 'selected' : ''; ?>>Mecânico</option>
+                                <option value="Elétrico" <?php echo $dadosServico['tipo'] == 'Eleétrico' ? 'selected' : ''; ?>>Elétrico</option>
+                                <option value="Estético" <?php echo $dadosServico['tipo'] == 'Estético' ? 'selected' : ''; ?>>Estético</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -90,24 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                 </div>
-
-                
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            
-                            <input type="hidden" name="id" id="id" class="form-control"
-                                placeholder="Complemento..." required value="<?php echo htmlspecialchars($dadosServico['id']); ?>">
-                        </div>
-                    </div>
-                </div>
-
                 <button type="submit" class="btn-cad">
-                <ion-icon name="pencil"></ion-icon> Atualizar
-                </button>
-            </form>
+            <ion-icon name="pencil"></ion-icon> Atualizar
+        </button>
+        </div>
+        </form>
         </div>
     </main>
-        <script>
+    <script>
 
         function applyMask(input, maskFunction) {
             input.value = maskFunction(input.value);

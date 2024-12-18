@@ -34,9 +34,9 @@ class Cliente
 
     public function atualizar($id, $nome, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endComplemento, $endRua, $endNum)
     {
-        $query = "UPDATE " . $this->table_name . " SET nome = ?, sexo = ?, dataNasc = ?, celular = ?, email = ?, cpf = ?, endCidade = ?, endBairro = ?, endComplemento = ?, endRUa = ?, endNum = ? WHERE id = ?";
+        $query = "UPDATE " . $this->table_name . " SET nome = ?, sexo = ?, dataNasc = ?, celular = ?, email = ?, cpf = ?, endCidade = ?, endBairro = ?, endComplemento = ?, endRua = ?, endNum = ? WHERE id = ?";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$id, $nome, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endComplemento, $endRua, $endNum]);
+        $stmt->execute([$nome, $sexo, $dataNasc, $celular, $email, $cpf, $endCidade, $endBairro, $endComplemento, $endRua, $endNum, $id]);
         return $stmt;
     }
 

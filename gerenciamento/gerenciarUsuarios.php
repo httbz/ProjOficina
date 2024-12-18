@@ -4,7 +4,7 @@ include_once '../config/config.php';
 include_once '../classes/Usuario.php';
 
 if (!isset($_SESSION['autenticado'])) {
-    header('Location: ../login.php');
+    header('Location: ../index.php');
     exit();
 }
 

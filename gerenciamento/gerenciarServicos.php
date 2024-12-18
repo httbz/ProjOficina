@@ -3,7 +3,6 @@ session_start();
 include_once '../config/config.php';
 include_once '../classes/Servicos.php';
 
-
 if (!isset($_SESSION['autenticado'] )) {
     header('Location: ../dashboard.php');
     exit();
@@ -19,13 +18,13 @@ if ($termo) {
     $servico = $servico->pesquisarServicos($termo); // Pesquisa os usuários com o termo
 } else {
     $servico = $servico->listarTodos(); // Lista todos os usuários caso não haja pesquisa
-  
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
-        $ser->deletar($_POST['id']);
-        header("Location: ./gerenciarUsuarios.php");
+        $servico = new Servicos($db);
+        $servico->deletar($_POST['id']);
+        header("Location: ./gerenciarServicos.php");
         exit();
     }
 }
@@ -63,14 +62,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <ion-icon name="search" style="font-weight: 900;"></ion-icon>
                         </button>
                     </div>
-                    <a href="../cadastro/cadUsuario.php" class="btn-adicionar"><ion-icon name="add-circle"></ion-icon></a>
+                    <a href="../cadastro/cadServico.php" class="btn-adicionar"><ion-icon name="add-circle"></ion-icon></a>
                 </div>
             </form>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
                         <th>Tipo</th>
                         <th>Ações</th>
                     </tr>
@@ -80,11 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <tr>
                             <td><?php echo $servicos['descricao']; ?></td>
                             <td><?php echo $servicos['valor']; ?></td>
+                            <td><?php echo $servicos['tipo']; ?></td>
                             <td>
                                 <div class="row">
-                                    <a href="deletarServico.php?id=<?php echo $servicos['id']; ?>" class="btn-excluir">Excluir
-                                      <ion-icon name="trash"></ion-icon></a>
-                                    <a href="editarServico.php?id=<?php echo $servicos['id']; ?>" class="btn-editar">Editar 
+                                <div class="row">
+                                        <form action="gerenciarServicos.php" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                                            <input type="hidden" name="id" value="<?php echo $servicos['id']; ?>">
+                                            <button type="submit" name="delete" class="btn-excluir">
+                                                Excluir <ion-icon name="trash"></ion-icon>
+                                            </button>
+                                        </form>
+                                    <a href="../editar/editarServico.php?id=<?php echo $servicos['id']; ?>" class="btn-editar">Editar 
                                       <ion-icon name="pencil"></ion-icon></a>
                                 </div>
                             </td>

@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1 class="le">Edição de Usuários</h1>
         <a href="../gerenciamento/gerenciarUsuarios.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
-    <main style="height: auto;">
+    <main style="height: 100vh;">
         <div class="container mx-auto shadow algin-middle">
             <h1 class="text-center">Editar <?php echo htmlspecialchars(ucfirst($dadosUsuario['nome'])); ?></h1>
             <form method="POST">

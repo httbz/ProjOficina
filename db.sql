@@ -76,7 +76,8 @@ CREATE TABLE `estoque` (
 CREATE TABLE `servicos` (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `descricao` varchar(1000) NOT NULL,
-  `valor` double NOT NULL
+  `valor` double NOT NULL,
+  `tipo` varchar (255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -125,7 +126,7 @@ CREATE TABLE `veiculos` (
   `marca` varchar(100) NOT NULL,
   `ano` int(11) NOT NULL,
   `placa` varchar(100) NOT NULL,
-   FOREIGN KEY (`fkCliente`) REFERENCES `clientes` (`id`) 
+   FOREIGN KEY (`fkCliente`) REFERENCES `clientes` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

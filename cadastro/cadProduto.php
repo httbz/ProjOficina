@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="../gerenciamento/gerenciarProdutos.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
 
-    <main>
+    <main style="height: 100vh;">
         <br><br><br>
         <div class="container mx-auto shadow ">
             <h1 class="text-center title-container">Cadastrar Produtos</h1>
@@ -85,12 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     </div>
-                    
-
-                               
-
-                
-
                 <button type="submit" class="btn-cad">
                     <i class="fa fa-plus"></i> Cadastrar
                 </button>

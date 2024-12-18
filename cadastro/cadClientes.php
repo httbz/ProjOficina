@@ -50,9 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
 
 
-    <main>
+    <main style="height: 100vh;">
         <div class="container">
-            <h1 class="text-center">Cadastrar Clientes</h1>
+            <h1 class="text-center">Cadastrar Cliente</h1>
             <form method="POST">
                 <div class="row">
                 <div class="col-md-6">
