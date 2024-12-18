@@ -58,7 +58,7 @@ main {
     justify-content: center; /* Alinha no eixo vertical */
     align-items: center;    /* Alinha no eixo horizontal */
     background: #212121;
-    height: 100vh;          /* Garante que ocupa a tela toda */
+    min-height: 100vh;     /* Garante que ocupa a tela toda */
 }
 table {
     margin: 10px;
@@ -187,14 +187,15 @@ table {
     opacity: 50%;
 }
 .container {
-
+    margin-top: 15px;
+    margin-bottom: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #424242;
     padding: 25px;
     border-radius: 15px;
-    width: 50vw;            
+    width: auto;            
     max-width: 800px;       
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 }

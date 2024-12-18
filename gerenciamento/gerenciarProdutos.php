@@ -46,7 +46,7 @@ if ($termo) {
         <h1 class="title">Gerenciamento de Produto</h1>
         <a href="../dashboard.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
-    <main>
+    <main >
         <div class="container">
             <h1 class="title-container">Produtos</h1>
             <form method="GET">

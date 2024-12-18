@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <header>
         <img src="../assets/img/logo.png" alt="Logo" class="small-img">
         <h1 class="le">Edição de Produto</h1>
-        <a href="../gerenciamento/gerenciarEstoques.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
+        <a href="../gerenciamento/gerenciarEstoque.php" class="btn-voltar"><ion-icon name="arrow-undo"></ion-icon></a>
     </header>
     <main style="height: 100vh;">
         <div class="container mx-auto shadow algin-middle">
